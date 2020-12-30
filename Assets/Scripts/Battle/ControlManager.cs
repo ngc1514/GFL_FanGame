@@ -37,20 +37,20 @@ public class ControlManager : MonoBehaviour
 
     #region Variables
     [SerializeField] private GameObject _friendlyPrefab;
-    Plane m_Plane;
+    private Plane _Plane;
     private GameObject _currentSelectedObj;
     #endregion
 
 
-    private void Awake()
+    void Awake()
     {
-
+        EnsureSingleton();
     }
 
 
     void Start()
     {
-        m_Plane = new Plane(Vector3.up, 0);
+        _Plane = new Plane(Vector3.up, 0);
         //Debug.Log("plane pos: " + m_Plane.normal.x + ", " + m_Plane.normal.y + ", " + m_Plane.normal.z);
     }
 
@@ -89,42 +89,53 @@ public class ControlManager : MonoBehaviour
     }
 
 
-    public Coord GetMouseClickedCoord()
+    // Returning Coord that player clicks
+    // TODO: need spacing at least 0.7 between each member
+    // TODO: add animation responce when clicking
+    public Coord GetMouseClickedCoord(Stage stage)
     {
         if (Input.GetMouseButtonDown(0))
         {
-            RaycastHit hitInfo = new RaycastHit();
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            // for hitting a GameObject
+            RaycastHit hitInfo = new RaycastHit();
             bool hitObject = Physics.Raycast(ray, out hitInfo);
+            _currentSelectedObj = hitInfo.transform.gameObject;
+            Vector3 hitObjPos = _currentSelectedObj.transform.position;
 
-            float rayToPlaneDistance = 0.0f;
-            bool hitPlane = m_Plane.Raycast(ray, out rayToPlaneDistance);
+            // for hitting plane
+            bool hitPlane = _Plane.Raycast(ray, out float rayToPlaneDistance);
+            Vector3 hitPlanePoint = ray.GetPoint(rayToPlaneDistance);
 
-            if (hitObject)
-            {
-                _currentSelectedObj = hitInfo.transform.gameObject;
+
+            if (hitObject && (hitPlanePoint.z < stage.ZBound || hitObjPos.z < stage.ZBound))
+            {          
+                Transform parent = _currentSelectedObj.transform.parent;
 
                 // if clicked ground, go to that exact coord
-                if (_currentSelectedObj.transform.parent.name == "ground")
+                if (parent.name == "ground")
                 {
-                    Vector3 hitPoint = ray.GetPoint(rayToPlaneDistance);
-                    Debug.Log("hitGound: " + hitPoint);
-                    return new Coord((float)Math.Round(hitPoint.x, 1), (float)Math.Round(hitPoint.z, 1));
+                    Debug.Log("hit plane: " + hitPlanePoint);
+                    return new Coord((float)Math.Round(hitPlanePoint.x, 1), 0, (float)Math.Round(hitPlanePoint.z, 1));
                 }
 
                 // if hit cube, go behind the cube -0.8 z offset
-                // FIXME: need to validate it's actually block not enemy (or friendly)
+                // TODO: validate it's actually a block not people 
+                // TODO: in case if in the future there are more than one echelon on the field
                 else
                 {
-                    Vector3 pos = _currentSelectedObj.transform.position;
-                    Debug.Log(string.Format("hit: {0}, ({1}, {2}, {3})",
-                                                _currentSelectedObj.transform.parent.name,
-                                                pos.x, pos.y, pos.z));
-                    return new Coord(pos.x, pos.z - 0.8f); ;
-                }
+                    Debug.Log(string.Format("hit object: {0}, ({1}, {2}, {3})",
+                                                parent.name,
+                                                hitObjPos.x, hitObjPos.y, hitObjPos.z));
+                    return new Coord(hitObjPos.x, 0, hitObjPos.z - 0.8f); ;
+                }                
             }
             else
+            {
+                Debug.LogError("Not hitting anything or coord is above 1/2 width.");
                 return null;
+            }
         }
         else
             return null;

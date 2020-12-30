@@ -20,13 +20,14 @@ public class StageManager : MonoBehaviour
 
     [SerializeField] private GameObject _enemyPrefab;
     [SerializeField] private GameObject _friendlyPrefab;
+    [SerializeField] private GameObject _caratPrefab;
+
 
     Stage testStage = new Stage();
 
 
     void Awake()
     {
-        // TODO: null checking for block
         //float enePosX = _enemyBlock.transform.position.x;
         //float enePosY = _enemyBlock.transform.position.y;
         //float enePosZ = _enemyBlock.transform.position.z;
@@ -49,52 +50,61 @@ public class StageManager : MonoBehaviour
         testStage.Width = 10;
         List<Coord> blocks = new List<Coord>
         {
-            new Coord(1, 1),
-            new Coord(3, 4)
+            new Coord(1, 0, 1),
+            new Coord(3, 0, 4)
         };
         testStage.blocks = blocks;
+
+        Friendly testFriendly = new Friendly();
+        testFriendly.EchIdx = 0;
+        testFriendly.PosIdx = 0;
+        testFriendly.Name = "ump9";
+        testFriendly.multc = 1;
+        testFriendly.prefabObj = _friendlyPrefab;
+
+
+        Echelon testEchelon0 = new Echelon();
+        testEchelon0.AddMemeber(testFriendly);
+        testEchelon0.AddMemeber(testFriendly);
+        testEchelon0.AddMemeber(testFriendly);
+
+
+        PlayerData.echelonList.Add(testEchelon0);
+        
+
     }
+
+
 
     void Start()
     {
-        // start assigning echelon location
-        if (!testStage.IsEveryoneAssigned())
+        if (!testStage.IsEcheChosen)
         {
-            Debug.Log("Start assigning coord");
-            StartCoroutine(AskToAssign(testStage));
+            Debug.Log("Choose your echelon");
+            StartCoroutine(AskToChooseEchAndAssignCoord(testStage));
         }
+
     }
 
 
-    void Update()
+
+    private IEnumerator AskToChooseEchAndAssignCoord(Stage stage)
     {
-        // Assign friendly pos when friendly pos list is empty
-        // click anywhere on map before 1/2 width to assign friendly coord
-        // if click on block, -0.8 Z offset
-    }
+        yield return stage.WaitForChooseEchelon();
+
+        yield return stage.WaitForAllCoordBeAssigned(stage);
 
 
-    private IEnumerator AskToAssign(Stage stage)
-    {
-        // wait for coord assignment
-        yield return stage.AssignEchePos();
-
-        // TODO: record all to be assigned and save to array
-        yield return WaitForEcheAssign(stage);
-    }
-
-    private IEnumerator WaitForEcheAssign(Stage stage)
-    {
-        bool done = false;
-
-        while (!done)
+        // TODO: ask player to confirm coord, need GUI
+        for (int i = 0; i < PlayerData.echelonList[0].Size; i++)
         {
-            if (stage.IsAssigned)
-            {
-                done = true;
-            }
-            yield return null;
+            GameObject carat = Instantiate(_caratPrefab, testStage.friendlyPos[i].GetVector3(), Quaternion.identity); ;
         }
+
+        // TODO: after assigning, spawn friendly at corresponding coord
+
     }
+
+
 
 }
