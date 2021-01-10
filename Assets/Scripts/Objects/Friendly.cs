@@ -19,7 +19,7 @@ Friendly object for each friendly doll
 
 ************************************************************************************/
 
-public class Friendly
+public class Friendly : MonoBehaviour
 {
     public int EchIdx { get; set; }
     public int PosIdx { get; set; }
@@ -28,11 +28,30 @@ public class Friendly
     public GameObject prefabObj;
 
 
+    public float testID = 0;
+
 
 
     // FIXME: do i need this
     public bool HasCoordAssigned { get; set; } = false;
 
 
+
+    private void Awake()
+    {
+        
+    }
+
+
+    // TODO: test if this.obj works
+    private void Start()
+    {
+        var rand = new System.Random();
+        testID = rand.Next(101);
+
+
+        Name = this.gameObject.name;
+        Debug.LogWarning("this friendly obj name: " + this.gameObject.name);
+    }
 
 }

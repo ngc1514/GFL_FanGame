@@ -55,27 +55,31 @@ public class StageManager : MonoBehaviour
         };
         testStage.blocks = blocks;
 
-        Friendly testFriendly = new Friendly();
-        testFriendly.EchIdx = 0;
-        testFriendly.PosIdx = 0;
-        testFriendly.Name = "ump9";
-        testFriendly.multc = 1;
-        testFriendly.prefabObj = _friendlyPrefab;
+        // FIXME: mono behavior cannot new
+        // FIXME: added script appears in StageManager object
+        // FIXME: need to init friendly objects in a diff way
+        //Friendly testFriendly = gameObject.AddComponent<Friendly>();
+        //testFriendly.EchIdx = 0;
+        //testFriendly.PosIdx = 0;
+        //testFriendly.Name = "ump9";
+        //testFriendly.multc = 1;
+        //testFriendly.prefabObj = _friendlyPrefab;
 
 
-        Echelon testEchelon0 = new Echelon();
-        testEchelon0.AddMemeber(testFriendly);
-        testEchelon0.AddMemeber(testFriendly);
-        testEchelon0.AddMemeber(testFriendly);
+        //Echelon testEchelon0 = new Echelon();
+        //testEchelon0.AddMemeber(testFriendly);
+        //testEchelon0.AddMemeber(testFriendly);
+        //testEchelon0.AddMemeber(testFriendly);
 
 
-        PlayerData.echelonList.Add(testEchelon0);
-        
+        //PlayerData.echelonList.Add(testEchelon0);
+
 
     }
 
 
 
+    // FIXME: when testing, comment out
     void Start()
     {
         if (!testStage.IsEcheChosen)
@@ -84,6 +88,14 @@ public class StageManager : MonoBehaviour
             StartCoroutine(AskToChooseEchAndAssignCoord(testStage));
         }
 
+
+
+    }
+
+
+    void Update()
+    {
+        
     }
 
 
@@ -93,15 +105,17 @@ public class StageManager : MonoBehaviour
         yield return stage.WaitForChooseEchelon();
 
         yield return stage.WaitForAllCoordBeAssigned(stage);
-
-
+   
         // TODO: ask player to confirm coord, need GUI
+
+        // TODO: after assigning, spawn friendly at corresponding coord
         for (int i = 0; i < PlayerData.echelonList[0].Size; i++)
         {
             GameObject carat = Instantiate(_caratPrefab, testStage.friendlyPos[i].GetVector3(), Quaternion.identity); ;
         }
 
-        // TODO: after assigning, spawn friendly at corresponding coord
+
+
 
     }
 

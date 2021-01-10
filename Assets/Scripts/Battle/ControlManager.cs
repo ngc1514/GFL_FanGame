@@ -38,7 +38,7 @@ public class ControlManager : MonoBehaviour
     #region Variables
     [SerializeField] private GameObject _friendlyPrefab;
     private Plane _Plane;
-    private GameObject _currentSelectedObj;
+    private GameObject _currentSelectedCollider;
     #endregion
 
 
@@ -57,7 +57,7 @@ public class ControlManager : MonoBehaviour
 
     void Update()
     {
-
+        GetMouseClickFriendly();
     }
 
 
@@ -101,17 +101,17 @@ public class ControlManager : MonoBehaviour
             // for hitting a GameObject
             RaycastHit hitInfo = new RaycastHit();
             bool hitObject = Physics.Raycast(ray, out hitInfo);
-            _currentSelectedObj = hitInfo.transform.gameObject;
-            Vector3 hitObjPos = _currentSelectedObj.transform.position;
+            _currentSelectedCollider = hitInfo.transform.gameObject;
+            Vector3 hitObjPos = _currentSelectedCollider.transform.position;
 
             // for hitting plane
             bool hitPlane = _Plane.Raycast(ray, out float rayToPlaneDistance);
             Vector3 hitPlanePoint = ray.GetPoint(rayToPlaneDistance);
 
 
-            if (hitObject && (hitPlanePoint.z < stage.ZBound || hitObjPos.z < stage.ZBound))
+            if (hitObject && (hitPlanePoint.z < stage.ZBoundary || hitObjPos.z < stage.ZBoundary))
             {          
-                Transform parent = _currentSelectedObj.transform.parent;
+                Transform parent = _currentSelectedCollider.transform.parent;
 
                 // if clicked ground, go to that exact coord
                 if (parent.name == "ground")
@@ -137,9 +137,46 @@ public class ControlManager : MonoBehaviour
                 return null;
             }
         }
-        else
-            return null;
+        Debug.LogError("Select coord returns null");
+        return null;
     }
+
+
+    // Put in update. return the selected friendly object
+    public Friendly GetMouseClickFriendly()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            GameObject hitColliderObj;
+
+            // for hitting a GameObject
+            RaycastHit hitInfo = new RaycastHit();
+            bool hitObject = Physics.Raycast(ray, out hitInfo);
+            hitColliderObj = hitInfo.transform.gameObject;
+            Vector3 hitObjPos = hitColliderObj.transform.position;
+
+
+            if (hitObject)
+            {
+                Transform hitColliderParent = hitColliderObj.transform.parent;
+
+                if (hitColliderParent.name == "friendly")
+                {
+                    Debug.Log(string.Format("hit object: {0}, ({1}, {2}, {3})",
+                                                hitColliderParent.name,
+                                                hitObjPos.x, hitObjPos.y, hitObjPos.z));
+
+                    Debug.LogWarning("select obj id: " + hitColliderParent.GetComponent<Friendly>().testID);
+
+                    return hitColliderParent.GetComponent<Friendly>();
+                }
+            }
+        }
+        return null;
+    }
+
 
 
     // TODO:

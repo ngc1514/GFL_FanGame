@@ -46,7 +46,7 @@ public class Stage
     public string Name { get; set; }
     public float Length { get; set; } //FIXME: need to re-adjust plane collider size?
     public float Width { get; set; }
-    public float ZBound
+    public float ZBoundary
     {
         get
         {
@@ -81,11 +81,16 @@ public class Stage
     public IEnumerator WaitForChooseEchelon()
     {
         bool done = false;
+        Debug.LogWarning("Dev: Right click simulate choosing an echelon");
         while (!done)
         {
             if (Input.GetMouseButtonDown(1)) // TODO: need to detect GUI button click 
             {
                 chosenEchelonIdx = 0; // FIXME: this is for testing. need GUI
+
+                // TODO: create an UI. Add friendlys to echelon list after selecting an echelon
+                // FIXME: Need another way to init/adding friendly from StageManager  
+
                 chosenEchelon = PlayerData.echelonList[chosenEchelonIdx];
             }
 

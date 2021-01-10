@@ -245,8 +245,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 5.508035e+11, y: 6.7406024e+22, z: 2.8131951e+23,
-    w: 2.8362064e+20}
+  m_BoundingSphereOverride: {x: 8.13e-43, y: -7.592753e-19, z: 8.11e-43, w: -0.0000000011373533}
   m_UseBoundingSphereOverride: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
@@ -275,6 +274,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 1374040348099875853, guid: a02bda549ee9d5449b731f978e19398e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1374040348099876081, guid: a02bda549ee9d5449b731f978e19398e,
         type: 3}
@@ -626,6 +630,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: block
       objectReference: {fileID: 0}
+    - target: {fileID: 328545011706039627, guid: 4c60ce8de1bf6fd42a8567ca0386c656,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 328545011706039631, guid: 4c60ce8de1bf6fd42a8567ca0386c656,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -744,6 +753,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: block (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 328545011706039627, guid: 4c60ce8de1bf6fd42a8567ca0386c656,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 328545011706039631, guid: 4c60ce8de1bf6fd42a8567ca0386c656,
         type: 3}
