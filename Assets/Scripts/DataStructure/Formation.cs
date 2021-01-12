@@ -2,17 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/************************************************************************************
+
+Holds all echelons
+
+************************************************************************************/
+
 public class Formations : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }

@@ -168,7 +168,7 @@ public class ControlManager : MonoBehaviour
                                                 hitColliderParent.name,
                                                 hitObjPos.x, hitObjPos.y, hitObjPos.z));
 
-                    Debug.LogWarning("select obj id: " + hitColliderParent.GetComponent<Friendly>().testID);
+                    Debug.LogWarning("select obj id: " + hitColliderParent.GetComponent<Friendly>().unitID);
 
                     return hitColliderParent.GetComponent<Friendly>();
                 }

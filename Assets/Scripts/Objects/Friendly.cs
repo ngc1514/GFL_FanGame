@@ -21,37 +21,68 @@ Friendly object for each friendly doll
 
 public class Friendly : MonoBehaviour
 {
-    public int EchIdx { get; set; }
-    public int PosIdx { get; set; }
-    public string Name { get; set; }
+    // FIXME: do i need singleton for friendly?
+    public static Friendly currentFriendly;
+
+
+    public float unitID = 0;
+    private int _echIdx { get; set; }
+    private int _posIdx { get; set; }
     public int multc = 1; // x1 ~ x5
-    public GameObject prefabObj;
+    public static GameObject friendlyObj;
+    public Rigidbody rb;
 
-
-    public float testID = 0;
-
-
-
-    // FIXME: do i need this
-    public bool HasCoordAssigned { get; set; } = false;
-
+    // TODO: test
 
 
     private void Awake()
     {
-        
-    }
+        currentFriendly = this;
 
+        //friendlyObj = Resources.Load("Prefabs/ump9") as GameObject;
+        //rb = GameObject.Find("Ump9_capsule_collider").GetComponent<Rigidbody>();
 
-    // TODO: test if this.obj works
-    private void Start()
-    {
         var rand = new System.Random();
-        testID = rand.Next(101);
-
-
-        Name = this.gameObject.name;
-        Debug.LogWarning("this friendly obj name: " + this.gameObject.name);
+        unitID = rand.Next(101);
     }
+
+
+    //public static Friendly NewFriendly()
+    //{
+    //    //GameObject go = new GameObject("friendly");
+    //    Friendly friendly = friendlyObj.AddComponent<Friendly>();
+    //    //var rand = new System.Random();
+    //    //unitID = rand.Next(101);
+    //    return friendly;
+    //}
+
+    
+    // FIXME: do i need this
+    public bool HasCoordAssigned { get; set; } = false;
+
+    public void SetEchIdx(int echIndexToSet)
+    {
+        if(echIndexToSet < PlayerPrefs.GetInt("MaxEchelonSlot"))
+        {
+            _echIdx = echIndexToSet;
+        }
+        else
+        {
+            Debug.LogError("Member's echelon index exceeded maximum echelon slot!");
+        }
+    }
+
+ 
+    // FIXME: assume echelon is not full yet and only use this when adding NOT SWAPPING
+    public void SetPosIdxForAddedMember(int posIdxToSet)
+    {
+        if (posIdxToSet > 0 && posIdxToSet < 5)
+        {
+            _posIdx = posIdxToSet;
+        }
+    }
+
+
+    // TODO: swap unit
 
 }

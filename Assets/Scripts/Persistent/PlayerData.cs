@@ -2,30 +2,50 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class PlayerData
+/************************************************************************************
+
+Holds echelon data
+
+//TODO: in the future use player pref
+
+************************************************************************************/
+
+public class PlayerData: MonoBehaviour
 {
-    //TODO: in the future save all data in a file and parse saved data before starting game 
+    public static PlayerData current;
+    private static int _maxEchelonSlot = 1;
+    public static List<Echelon> echelonList = new List<Echelon>();
 
 
-    #region Singleton
-    private static ControlManager _instance;
-    public static ControlManager Instance
+    // FIXME: this is for dev. Need to read data from player files in the future
+    public static void InitPlayerData()
     {
-        get
-        {
-            if (!_instance)
-            {
-                Debug.LogWarning("An instance of ControlManager is needed. Creating one now...");
-                _instance = new GameObject("ControlManager", typeof(ControlManager)).GetComponent<ControlManager>();
-            }
+        Debug.LogWarning("init player data");
 
-            return _instance;
-        }
+        PlayerPrefs.SetInt("MaxEchelonSlot", _maxEchelonSlot);
+
+
+        Echelon newTestEchelon = new Echelon();
+        Friendly ump9 = new Friendly(); // FIXME: need to fix new
+        //Friendly ump9 = Friendly.NewFriendly();
+        newTestEchelon.AddMemeber(ump9);
     }
-    #endregion
 
 
 
-    public static int MaxEchelonSlot { get; private set; } = 1;
-    public static List<Echelon> echelonList = new List<Echelon>(); 
+    public static int GetEchelonCount()
+    {
+        return echelonList.Count;
+    }
+
+
+    public void IncreaseMaxEchelonSlot()
+    {
+        _maxEchelonSlot += 1;
+        PlayerPrefs.SetInt("MaxEchelonSlot", _maxEchelonSlot);
+    }
+
+
+
+
 }

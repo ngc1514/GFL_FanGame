@@ -65,6 +65,7 @@ public class Stage
     public List<Coord> friendlyPos = new List<Coord>();
 
 
+
     //public IEnumerator ChooseEchelon()
     //{
     //    if (chosenEchelon is null)
@@ -94,7 +95,7 @@ public class Stage
                 chosenEchelon = PlayerData.echelonList[chosenEchelonIdx];
             }
 
-            else if (chosenEchelonIdx != -1 && chosenEchelonIdx < PlayerData.MaxEchelonSlot && chosenEchelon != null)
+            else if (chosenEchelonIdx != -1 && chosenEchelonIdx < PlayerPrefs.GetInt("MaxEchelonSlot") && chosenEchelon != null)
             {
                 IsEcheChosen = true;
                 Debug.Log("Done choosing echelon. Chosen echlon index: " + chosenEchelonIdx);

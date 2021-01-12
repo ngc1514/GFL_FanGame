@@ -28,6 +28,8 @@ public class StageManager : MonoBehaviour
 
     void Awake()
     {
+        PlayerData.InitPlayerData();
+
         //float enePosX = _enemyBlock.transform.position.x;
         //float enePosY = _enemyBlock.transform.position.y;
         //float enePosZ = _enemyBlock.transform.position.z;
@@ -54,50 +56,20 @@ public class StageManager : MonoBehaviour
             new Coord(3, 0, 4)
         };
         testStage.blocks = blocks;
-
-        // FIXME: mono behavior cannot new
-        // FIXME: added script appears in StageManager object
-        // FIXME: need to init friendly objects in a diff way
-        //Friendly testFriendly = gameObject.AddComponent<Friendly>();
-        //testFriendly.EchIdx = 0;
-        //testFriendly.PosIdx = 0;
-        //testFriendly.Name = "ump9";
-        //testFriendly.multc = 1;
-        //testFriendly.prefabObj = _friendlyPrefab;
-
-
-        //Echelon testEchelon0 = new Echelon();
-        //testEchelon0.AddMemeber(testFriendly);
-        //testEchelon0.AddMemeber(testFriendly);
-        //testEchelon0.AddMemeber(testFriendly);
-
-
-        //PlayerData.echelonList.Add(testEchelon0);
-
-
     }
 
 
 
-    // FIXME: when testing, comment out
+
     void Start()
     {
+        // ask user to assign coord after choosing an echelon
         if (!testStage.IsEcheChosen)
         {
             Debug.Log("Choose your echelon");
             StartCoroutine(AskToChooseEchAndAssignCoord(testStage));
         }
-
-
-
     }
-
-
-    void Update()
-    {
-        
-    }
-
 
 
     private IEnumerator AskToChooseEchAndAssignCoord(Stage stage)
@@ -106,12 +78,12 @@ public class StageManager : MonoBehaviour
 
         yield return stage.WaitForAllCoordBeAssigned(stage);
    
-        // TODO: ask player to confirm coord, need GUI
+        // TODO: ask player to confirm coord, GUI
 
-        // TODO: after assigning, spawn friendly at corresponding coord
+        // FIXME: [0] is hard coded for now
         for (int i = 0; i < PlayerData.echelonList[0].Size; i++)
         {
-            GameObject carat = Instantiate(_caratPrefab, testStage.friendlyPos[i].GetVector3(), Quaternion.identity); ;
+            GameObject instanstiatedFriendly = Instantiate(_friendlyPrefab, testStage.friendlyPos[i].GetVector3(), Quaternion.identity);
         }
 
 

@@ -15,6 +15,14 @@ This script is responsible for
 
 public class MyPhysics : MonoBehaviour
 {
+    //public static MyPhysics current;
+
+
+    // Todo: different type of unit have different speed
+    public static float SMGSpeed { get; private set; } = 1.0f;
+
+
+
     void Start()
     {
         
@@ -23,5 +31,12 @@ public class MyPhysics : MonoBehaviour
     void Update()
     {
         
+    }
+
+
+
+    void MoveCharacter()
+    {
+
     }
 }
