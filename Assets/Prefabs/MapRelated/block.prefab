@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 328545011706039631}
   - component: {fileID: 328545011706039630}
   - component: {fileID: 328545011706039629}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: block
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91,7 +91,7 @@ GameObject:
   - component: {fileID: 3777876219666111029}
   - component: {fileID: 335700749673698626}
   - component: {fileID: 2145521881200659611}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: BoxCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}

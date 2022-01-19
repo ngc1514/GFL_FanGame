@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 162931539147701988}
   - component: {fileID: 162931539147701989}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: carat_yellow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -57,7 +57,7 @@ GameObject:
   - component: {fileID: 162931539977180682}
   - component: {fileID: 162931539978310858}
   - component: {fileID: 162931539022644794}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: vrui-carat
   m_TagString: VRUIAccent
   m_Icon: {fileID: 0}
