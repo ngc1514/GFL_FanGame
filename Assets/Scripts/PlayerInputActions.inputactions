@@ -121,7 +121,7 @@
                 },
                 {
                     "name": "TouchDragLook",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "a08754a1-3e3c-4a25-ba1b-4b2e50362070",
                     "expectedControlType": "Vector2",
                     "processors": "",
@@ -143,7 +143,7 @@
                     "id": "54e2c43e-65a3-44d9-8d6b-efe901630d0e",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
+                    "interactions": "Hold",
                     "initialStateCheck": false
                 },
                 {
@@ -237,7 +237,7 @@
                 {
                     "name": "",
                     "id": "00e0e8af-dc3a-428d-8f9d-459f6fe00707",
-                    "path": "<Gamepad>/rightStick",
+                    "path": "<Touchscreen>/delta",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -259,7 +259,7 @@
                 {
                     "name": "",
                     "id": "77ebf645-27aa-4b35-9c07-d5b83b13e52b",
-                    "path": "",
+                    "path": "<Gamepad>/rightTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

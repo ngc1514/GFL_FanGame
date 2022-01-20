@@ -9,7 +9,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float playerSpeed = 10f;
+    [SerializeField] private float playerSpeed = 20f;
     [SerializeField] private float jumpHeight = 1.0f;
     [SerializeField] private float gravityValue = -9.81f;
     [SerializeField] private float rotationSpeed = 4f;
@@ -50,8 +50,6 @@ public class PlayerController : MonoBehaviour
     {
         cameraMain = Camera.main.transform;
         childPlayer = transform.GetChild(1).transform;
-        //childGun = transform.GetChild(2).transform;
-        // FIXME: ump9 turns but not the gun
     }
 
     void Update()
@@ -83,7 +81,6 @@ public class PlayerController : MonoBehaviour
         if (movementInput != Vector2.zero){
             Quaternion newRotation = Quaternion.Euler(new Vector3(childPlayer.localEulerAngles.x, cameraMain.localEulerAngles.y, childPlayer.localEulerAngles.z));        
             childPlayer.rotation = Quaternion.Lerp(childPlayer.rotation, newRotation, Time.deltaTime * rotationSpeed);
-            //childGun.rotation = Quaternion.Lerp(childPlayer.rotation, newRotation, Time.deltaTime * rotationSpeed); // FIXME: ump9 turns but not the gun
         }
 
 
