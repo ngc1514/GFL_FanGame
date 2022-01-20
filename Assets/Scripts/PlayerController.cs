@@ -5,28 +5,35 @@ using UnityEngine;
 /*
  * This script controls the player movement and other physics such as speed and gravity
  */
+[RequireComponent(typeof(CharacterController))]
+
 public class PlayerController : MonoBehaviour
 {
-    public int health = 100;
-    public int stamina = 100;
     [SerializeField] private float playerSpeed = 10f;
     [SerializeField] private float jumpHeight = 1.0f;
     [SerializeField] private float gravityValue = -9.81f;
     [SerializeField] private float rotationSpeed = 4f;
 
+    private bool groundedPlayer;
+    private Vector3 playerVelocity;
+    private Transform cameraMain; // move in direction of cam
+    private Transform childPlayer; //for rotating player when rotate camera
+    private Transform childGun; //for rotating gun when rotate camera
 
     [SerializeField] private CharacterController controller;
-    private PlayerInputActions playerInput;
-    private Vector3 playerVelocity;
-    private bool groundedPlayer;
-    private Transform cameraMain; // move in direction of cam
-    [SerializeField] private Transform childPlayer; //for rotating camera when rotate player
+    [SerializeField] private PlayerInputActions playerInput;
+    [SerializeField] private PlayerManager playerManager;
 
 
     private void Awake()
     {
         playerInput = new PlayerInputActions();
         controller = GetComponent<CharacterController>();
+
+        if (playerManager == null)
+        {
+            playerManager = new PlayerManager();
+        }
     }
 
     private void OnEnable()
@@ -39,11 +46,12 @@ public class PlayerController : MonoBehaviour
         playerInput.Disable();
     }
 
-
     private void Start()
     {
         cameraMain = Camera.main.transform;
-        childPlayer = transform.GetChild(0).transform;
+        childPlayer = transform.GetChild(1).transform;
+        //childGun = transform.GetChild(2).transform;
+        // FIXME: ump9 turns but not the gun
     }
 
     void Update()
@@ -74,15 +82,25 @@ public class PlayerController : MonoBehaviour
         // Rotate cam when rotating player
         if (movementInput != Vector2.zero){
             Quaternion newRotation = Quaternion.Euler(new Vector3(childPlayer.localEulerAngles.x, cameraMain.localEulerAngles.y, childPlayer.localEulerAngles.z));        
-            childPlayer.rotation = Quaternion.Lerp(childPlayer.rotation, newRotation, Time.deltaTime * rotationSpeed);    
+            childPlayer.rotation = Quaternion.Lerp(childPlayer.rotation, newRotation, Time.deltaTime * rotationSpeed);
+            //childGun.rotation = Quaternion.Lerp(childPlayer.rotation, newRotation, Time.deltaTime * rotationSpeed); // FIXME: ump9 turns but not the gun
         }
+
+
+        // Fire button press
+        if(playerInput.PlayerAction.SingleFire.triggered){
+            playerManager.FireOrReload();
+        }
+        // TODO: Hold to keep shooting holdFire
+
+
+
+        // Reload button
+        if (playerInput.PlayerAction.Reload.triggered)
+        {
+            playerManager.Reload();
+        }
+
     }
 
-
-
-
-    public void Fire()
-    {
-        Debug.Log("FIRE!!");
-    }
 }

@@ -11,27 +11,27 @@ using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
 {
-    private PlayerInputActions playerInputActions;
+    public PlayerInputActions playerInput;
 
     private void Awake()
     {
-        playerInputActions = new PlayerInputActions();
+        playerInput = new PlayerInputActions();
     }
 
     private void OnEnable()
     {
-        playerInputActions.Enable();
+        playerInput.Enable();
     }
 
     private void OnDisable()
     {
-        playerInputActions.Disable();
+        playerInput.Disable();
     }
 
     private void Start()
     {
         // when TouchSingleFire action is started, subscribe to callBackContext variable and call function SingleFire(arg)
-        playerInputActions.Touch.TouchSingleFire.started += callBackContext => SingleFire(callBackContext);
+        // playerInput.Touch.TouchSingleFire.started += callBackContext => SingleFire(callBackContext);
 
 
         //inputControl.Touch.TouchDragLook.started += callBackContext => Drag(callBackContext);
@@ -45,12 +45,10 @@ public class InputManager : MonoBehaviour
     }
 
 
-    void SingleFire(InputAction.CallbackContext context)
-    {
-        Debug.Log("Single Fire: " + context.action);
-    }
-
-
+    //void SingleFire(InputAction.CallbackContext context)
+    //{
+    //    Debug.Log("Single Fire: " + context.action);
+    //}
 
 
     // NOTE: not using for now fixed other way. Kept for reference

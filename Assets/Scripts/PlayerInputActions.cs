@@ -149,6 +149,33 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""SingleFire"",
+                    ""type"": ""Button"",
+                    ""id"": ""0f8ea825-60b8-4f6c-8479-0dc02054a0e0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""HoldFire"",
+                    ""type"": ""Button"",
+                    ""id"": ""54e2c43e-65a3-44d9-8d6b-efe901630d0e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Reload"",
+                    ""type"": ""Button"",
+                    ""id"": ""d612c2f7-28a9-4f60-b33b-fe1aa928320c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -239,6 +266,39 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""action"": ""TouchDragLook"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""87cd9e89-c720-4554-bb1b-5be8c24975d8"",
+                    ""path"": ""<Gamepad>/rightTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SingleFire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""77ebf645-27aa-4b35-9c07-d5b83b13e52b"",
+                    ""path"": """",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""HoldFire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""645fb17f-4ddb-44a6-8d7d-2b6e6c470298"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Reload"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -258,6 +318,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_PlayerAction_Move = m_PlayerAction.FindAction("Move", throwIfNotFound: true);
         m_PlayerAction_Jump = m_PlayerAction.FindAction("Jump", throwIfNotFound: true);
         m_PlayerAction_TouchDragLook = m_PlayerAction.FindAction("TouchDragLook", throwIfNotFound: true);
+        m_PlayerAction_SingleFire = m_PlayerAction.FindAction("SingleFire", throwIfNotFound: true);
+        m_PlayerAction_HoldFire = m_PlayerAction.FindAction("HoldFire", throwIfNotFound: true);
+        m_PlayerAction_Reload = m_PlayerAction.FindAction("Reload", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -402,6 +465,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerAction_Move;
     private readonly InputAction m_PlayerAction_Jump;
     private readonly InputAction m_PlayerAction_TouchDragLook;
+    private readonly InputAction m_PlayerAction_SingleFire;
+    private readonly InputAction m_PlayerAction_HoldFire;
+    private readonly InputAction m_PlayerAction_Reload;
     public struct PlayerActionActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -409,6 +475,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_PlayerAction_Move;
         public InputAction @Jump => m_Wrapper.m_PlayerAction_Jump;
         public InputAction @TouchDragLook => m_Wrapper.m_PlayerAction_TouchDragLook;
+        public InputAction @SingleFire => m_Wrapper.m_PlayerAction_SingleFire;
+        public InputAction @HoldFire => m_Wrapper.m_PlayerAction_HoldFire;
+        public InputAction @Reload => m_Wrapper.m_PlayerAction_Reload;
         public InputActionMap Get() { return m_Wrapper.m_PlayerAction; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -427,6 +496,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @TouchDragLook.started -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnTouchDragLook;
                 @TouchDragLook.performed -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnTouchDragLook;
                 @TouchDragLook.canceled -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnTouchDragLook;
+                @SingleFire.started -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnSingleFire;
+                @SingleFire.performed -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnSingleFire;
+                @SingleFire.canceled -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnSingleFire;
+                @HoldFire.started -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnHoldFire;
+                @HoldFire.performed -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnHoldFire;
+                @HoldFire.canceled -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnHoldFire;
+                @Reload.started -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnReload;
+                @Reload.performed -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnReload;
+                @Reload.canceled -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnReload;
             }
             m_Wrapper.m_PlayerActionActionsCallbackInterface = instance;
             if (instance != null)
@@ -440,6 +518,15 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @TouchDragLook.started += instance.OnTouchDragLook;
                 @TouchDragLook.performed += instance.OnTouchDragLook;
                 @TouchDragLook.canceled += instance.OnTouchDragLook;
+                @SingleFire.started += instance.OnSingleFire;
+                @SingleFire.performed += instance.OnSingleFire;
+                @SingleFire.canceled += instance.OnSingleFire;
+                @HoldFire.started += instance.OnHoldFire;
+                @HoldFire.performed += instance.OnHoldFire;
+                @HoldFire.canceled += instance.OnHoldFire;
+                @Reload.started += instance.OnReload;
+                @Reload.performed += instance.OnReload;
+                @Reload.canceled += instance.OnReload;
             }
         }
     }
@@ -459,5 +546,8 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnTouchDragLook(InputAction.CallbackContext context);
+        void OnSingleFire(InputAction.CallbackContext context);
+        void OnHoldFire(InputAction.CallbackContext context);
+        void OnReload(InputAction.CallbackContext context);
     }
 }
