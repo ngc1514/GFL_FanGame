@@ -55,6 +55,7 @@ public class PlayerManager : MonoBehaviour
         ammoCountText.text = string.Format("Ammo: {0}/{1}", currentAmmo, totalAmmoRemain);
     }
 
+
     public void Reload()
     {
         int need = magSize - currentAmmo;

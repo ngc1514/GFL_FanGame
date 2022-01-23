@@ -2,16 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+using UnityEngine.InputSystem.LowLevel;
 
 /*
  * Test code for touchscreen input action control but newer working code are moved to PlayerController
  * NOTE: contain some touch screen control concept. Might be helpful in the future. 
  */
 
+//[DefaultExecutionOrder(-1)]
 public class InputManager : MonoBehaviour
 {
     public PlayerInputActions playerInput;
+
+    public delegate void StartTouch(Vector2 position, float time);
+    public event StartTouch OnStartTouch;
+    public delegate void EndTouch(Vector2 position, float time);
+    public event EndTouch OnEndTouch;
+
+    public Vector2 dragTouch;
+
 
     private void Awake()
     {
@@ -30,19 +39,32 @@ public class InputManager : MonoBehaviour
 
     private void Start()
     {
-        // when TouchSingleFire action is started, subscribe to callBackContext variable and call function SingleFire(arg)
-        // playerInput.Touch.TouchSingleFire.started += callBackContext => SingleFire(callBackContext);
-
-
-        //inputControl.Touch.TouchDragLook.started += callBackContext => Drag(callBackContext);
-
-        // an example to return screen cordinate after touching
-        // playerInputActions.Touch.TouchSingleFire.started += callBackContext => StartTouch(callBackContext);
-        // an example of endinga touch
-        // playerInputActions.Touch.TouchSingleFire.canceled += callBackContext => EndTouch(callBackContext);
-
-
+        playerInput.PlayerAction.TouchDragLook.started += callBackContext => StartTouchPrimary(callBackContext);
+        //playerInput.PlayerAction.TouchDragLook.performed += callBackContext => EndTouchPrimary(callBackContext);
     }
+
+    private void Update()
+    {
+        //Debug.Log(dragTouch);
+    }
+
+
+
+    void StartTouchPrimary(InputAction.CallbackContext context)
+    {
+        //InputActionPhase tPhase = playerInput.PlayerAction.TouchDragLook.phase;
+        //Debug.Log(tPhase.ToString());
+
+        //dragTouch = context.ReadValue<TouchState>().delta;
+        //Debug.Log("Input Manager subscribe drag:" + dragTouch);
+    }
+
+    //void EndTouchPrimary(InputAction.CallbackContext context)
+    //{
+    //}
+
+
+
 
 
     //void SingleFire(InputAction.CallbackContext context)

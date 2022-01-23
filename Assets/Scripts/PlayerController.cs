@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.Controls;
 
 /*
  * This script controls the player movement and other physics such as speed and gravity
@@ -49,7 +50,7 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         cameraMain = Camera.main.transform;
-        childPlayer = transform.GetChild(1).transform;
+        childPlayer = transform.GetChild(0).transform;
     }
 
     void Update()
@@ -61,9 +62,7 @@ public class PlayerController : MonoBehaviour
             playerVelocity.y = 0f;
         }
 
-        // Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")); // old input system
         Vector2 movementInput = playerInput.PlayerAction.Move.ReadValue<Vector2>();
-        // Vector3 move = new Vector3(movementInput.x, 0f, movementInput.y);
         Vector3 move = (cameraMain.forward * movementInput.y + cameraMain.right * movementInput.x); // move in direction of cam
         move.y = 0;
         controller.Move(move * Time.deltaTime * playerSpeed);
@@ -79,24 +78,40 @@ public class PlayerController : MonoBehaviour
 
         // Rotate cam when rotating player
         if (movementInput != Vector2.zero){
-            Quaternion newRotation = Quaternion.Euler(new Vector3(childPlayer.localEulerAngles.x, cameraMain.localEulerAngles.y, childPlayer.localEulerAngles.z));        
+            Quaternion newRotation = Quaternion.Euler(new Vector3(childPlayer.localEulerAngles.x, 
+                                                                    cameraMain.localEulerAngles.y, 
+                                                                    childPlayer.localEulerAngles.z));        
             childPlayer.rotation = Quaternion.Lerp(childPlayer.rotation, newRotation, Time.deltaTime * rotationSpeed);
         }
 
-
         // Fire button press
-        if(playerInput.PlayerAction.SingleFire.triggered){
+        if (playerInput.PlayerAction.SingleFire.triggered){
             playerManager.FireOrReload();
         }
+
         // TODO: Hold to keep shooting holdFire
+        //if (playerInput.PlayerAction.HoldFire.triggered)
+        //{
 
-
+        //}
 
         // Reload button
         if (playerInput.PlayerAction.Reload.triggered)
         {
             playerManager.Reload();
         }
+
+
+        // FIXME: stop cam movement when finger stops
+        //if (playerInput.PlayerAction.TouchDragLook.triggered && playerInput.PlayerAction.Move.triggered)
+        //{
+        //    Debug.Log("FUCK YOURE ON TOP" + playerInput.PlayerAction.TouchDragLook.ReadValue<Vector2>());
+        //}
+
+
+        //Debug.Log(playerInput.PlayerAction.TouchDragLook.ReadValueAsObject());
+        //Debug.Log(playerInput.PlayerAction.TouchDragLook.ReadValue<Vector2>());
+        //Debug.Log(playerInput.PlayerAction.Move.ReadValue<Vector2>());
 
     }
 
