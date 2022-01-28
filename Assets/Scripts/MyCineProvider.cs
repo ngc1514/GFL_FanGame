@@ -60,7 +60,7 @@ public class MyCineProvider : MonoBehaviour, AxisState.IInputAxisProvider
                     return action.ReadValue<Vector2>().x;
                 case 1:
                     //Debug.Log("down");
-                    isDraggingLookBtn = false;
+                    isDraggingLookBtn = false; // is dragging the look button
                     return action.ReadValue<Vector2>().y;
                 case 2:
                     return action.ReadValue<float>();

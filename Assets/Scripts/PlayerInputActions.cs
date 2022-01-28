@@ -78,8 +78,8 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""id"": ""0f8ea825-60b8-4f6c-8479-0dc02054a0e0"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Press"",
-                    ""initialStateCheck"": false
+                    ""interactions"": ""Press(pressPoint=0.1)"",
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""HoldFire"",

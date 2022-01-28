@@ -6,6 +6,7 @@ TagManager:
   tags:
   - ControlManager
   - VRUIAccent
+  - Data_ui
   layers:
   - Default
   - TransparentFX
