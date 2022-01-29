@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - ControlManager
+  - VRUIAccent
+  - Data_ui
   layers:
   - Default
   - TransparentFX
@@ -14,7 +16,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - Ground
   - 
   - 
   - 
