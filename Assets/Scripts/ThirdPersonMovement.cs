@@ -39,7 +39,7 @@ public class ThirdPersonMovement : MonoBehaviour
         {
             velocity.y = -2f; // -2f;
         }
-        // FIXME: need to not allow changing direction after jump
+        // TODO: need to not allow changing direction after jump
         if ((Input.GetButtonDown("Jump") || Input.GetButton("Jump")) && isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -1.5f * gravity);

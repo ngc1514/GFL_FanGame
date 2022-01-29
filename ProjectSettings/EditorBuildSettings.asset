@@ -6,8 +6,8 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Battle.unity
-    guid: 11cb66ca86f77b94face507751f84181
+    path: Assets/Scenes/Battle stick.unity
+    guid: 9363c3fdb99150f498116484a0706d3e
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 6f76371dddd7bc947a550ec6d91fe735,
       type: 2}

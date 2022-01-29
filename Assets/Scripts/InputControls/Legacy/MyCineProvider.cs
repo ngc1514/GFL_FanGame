@@ -5,6 +5,9 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Users;
 
 
+/*
+ * GetAxisValue() is modified to convert Touch type input to Vector2
+ */
 
 /// <summary>
 /// This is an add-on to override the legacy input system and read input using the
@@ -51,8 +54,9 @@ public class MyCineProvider : MonoBehaviour, AxisState.IInputAxisProvider
     public virtual float GetAxisValue(int axis)
     {
         var action = ResolveForPlayer(axis, axis == 2 ? ZAxis : XYAxis);
-        if (action != null && isDraggingLookBtn)
+        if (action != null && InputManager.Instance.IsDraggingLookBtn) // && isDraggingLookBtn) //
         {
+            //Debug.Log("Dragging Look btn");
             switch (axis)
             {
                 case 0:
@@ -60,7 +64,9 @@ public class MyCineProvider : MonoBehaviour, AxisState.IInputAxisProvider
                     return action.ReadValue<Vector2>().x;
                 case 1:
                     //Debug.Log("down");
-                    isDraggingLookBtn = false; // is dragging the look button
+                    // set isDragging to false
+                    // how about set it to false when releasing finger from screen (when dragging is finished)
+                    //InputManager.Instance.SetDraggingLookBtnVal(false); 
                     return action.ReadValue<Vector2>().y;
                 case 2:
                     return action.ReadValue<float>();
@@ -114,8 +120,8 @@ public class MyCineProvider : MonoBehaviour, AxisState.IInputAxisProvider
         m_cachedActions = null;
     }
 
-    public void SetDraggingMoveBtnTrue()
+    public void SetDraggingLookBtnVal(bool inVal)
     {
-        isDraggingLookBtn = true;
+        isDraggingLookBtn = inVal;
     }
 }

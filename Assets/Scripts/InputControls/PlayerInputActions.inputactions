@@ -7,16 +7,16 @@
             "actions": [
                 {
                     "name": "TouchDragLook",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "a08754a1-3e3c-4a25-ba1b-4b2e50362070",
                     "expectedControlType": "Vector2",
-                    "processors": "",
+                    "processors": "LookBtn",
                     "interactions": "",
                     "initialStateCheck": true
                 },
                 {
                     "name": "TouchDragLookStick",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "03a6fef5-ce68-4867-ada8-e571bd7c0895",
                     "expectedControlType": "Vector2",
                     "processors": "",
@@ -24,7 +24,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Nothing",
+                    "name": "NoAction",
                     "type": "Value",
                     "id": "1ccc01d9-ff3f-4f0a-993e-afa6c3f13c23",
                     "expectedControlType": "",
@@ -52,11 +52,11 @@
                 },
                 {
                     "name": "SingleFire",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "0f8ea825-60b8-4f6c-8479-0dc02054a0e0",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "Press(pressPoint=0.1)",
+                    "interactions": "Press(pressPoint=1.401298E-45)",
                     "initialStateCheck": true
                 },
                 {
@@ -218,7 +218,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Nothing",
+                    "action": "NoAction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

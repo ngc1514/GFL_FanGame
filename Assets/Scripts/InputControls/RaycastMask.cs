@@ -3,6 +3,8 @@ using UnityEngine.UI;
 
 /*
  * Raycast irregular shape buttom. In this case, the look button. 
+ * So that hen dragging the transparent part of the LookBtn sprite, button will NOT get triggered 
+ * 
  * Code taken from: https://stackoverflow.com/questions/63117045/unity-buttons-non-rectangular-shape
  */
 

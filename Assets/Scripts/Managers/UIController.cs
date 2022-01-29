@@ -15,6 +15,9 @@ public class UIController : MonoBehaviour
     [SerializeField] private Text ammoCountText;
     [SerializeField] private PlayerManager playerManager;
 
+
+    [SerializeField] public Text debugText;
+
     private Player currentPlayer;
 
     private void Awake()
@@ -58,4 +61,19 @@ public class UIController : MonoBehaviour
         //Debug.Log($"Ammo: {currentPlayer.GetCurrentWeapon().CurrentAmmo}, {currentPlayer.GetCurrentWeapon().TotalAmmoRemain}");
         ammoCountText.text = string.Format("Ammo: {0}/{1}", currentPlayer.GetCurrentWeapon().CurrentAmmo, currentPlayer.GetCurrentWeapon().TotalAmmoRemain);
     }
+
+
+
+
+    public void UpdateDebug(string txt)
+    {
+        debugText.text += (txt + "\n");
+    }
+
+    public void ClearDebug()
+    {
+        debugText.text = "";
+    }
+
+
 }

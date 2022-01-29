@@ -9,9 +9,9 @@ using UnityEngine;
 /// A stick control displayed on screen and moved around by touch or other pointer
 /// input.
 /// </summary>
-public class LookBtnOnScreenStick : OnScreenControl, IPointerDownHandler, IPointerUpHandler, IDragHandler
+public class LookBtnOnScreenStick : OnScreenControl, IPointerDownHandler, IPointerUpHandler, IDragHandler //, IBeginDragHandler, IEndDragHandler
 {
-    public MyCineProvider myCineProvider;
+    //public MyCineProvider myCineProvider;
 
     public void OnPointerUp(PointerEventData eventData)
     {
@@ -32,8 +32,6 @@ public class LookBtnOnScreenStick : OnScreenControl, IPointerDownHandler, IPoint
 
     public void OnDrag(PointerEventData eventData)
     {
-        // set true only when dragging the MoveBtn
-        myCineProvider.SetDraggingMoveBtnTrue();
 
         if (eventData == null)
             throw new System.ArgumentNullException(nameof(eventData));
@@ -48,11 +46,29 @@ public class LookBtnOnScreenStick : OnScreenControl, IPointerDownHandler, IPoint
         SendValueToControl(newPos);
     }
 
+    // Below code is solved via LookBtnDragHandler
+    //public void OnBeginDrag(PointerEventData eventData)
+    //{
+        //Debug.Log("Beging drag");
+        // set true only when dragging the MoveBtn
+        // how about set it to false when releasing finger from screen (when dragging is finished)
+        //InputManager.Instance.SetDraggingLookBtnVal(true);
+    //}
+
+    //public void OnEndDrag(PointerEventData eventData)
+    //{
+        //Debug.Log("Ending drag");
+        // set true only when dragging the MoveBtn
+        // how about set it to false when releasing finger from screen (when dragging is finished)
+        //InputManager.Instance.SetDraggingLookBtnVal(false);
+    //}
+
 
     private void Start()
     {
         m_StartPos = ((RectTransform)transform).anchoredPosition;
     }
+
 
     public float movementRange
     {

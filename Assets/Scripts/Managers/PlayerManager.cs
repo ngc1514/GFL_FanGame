@@ -23,6 +23,10 @@ public class PlayerManager : MonoBehaviour
             {
                 Debug.LogError("CurrentPlayer still null!");
             }
+            else
+            {
+                Debug.Log($"Acquired player: {player.gameObject.name}");
+            }
             //Instantiate(playerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
             //player = playerPrefab.GetComponent<Player>();
         }

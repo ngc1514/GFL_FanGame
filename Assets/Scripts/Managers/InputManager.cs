@@ -19,6 +19,10 @@ public class InputManager : MonoBehaviour
 
     public PlayerInputActions playerInput;
 
+    // Detect if dragging look btn
+    public bool IsDraggingLookBtn { get; private set; }
+
+
     //public Vector2 dragTouch;
     //public delegate void StartTouch(Vector2 position, float time);
     //public delegate void EndTouch(Vector2 position, float time);
@@ -44,6 +48,7 @@ public class InputManager : MonoBehaviour
         {
             Debug.LogError("PlayerInputActions not activating");
         }
+
     }
 
     private void OnEnable()
@@ -56,11 +61,16 @@ public class InputManager : MonoBehaviour
         playerInput.Disable();
     }
 
+    public void SetDraggingLookBtnVal(bool inVal)
+    {
+        IsDraggingLookBtn = inVal;
+    }
+
 
     //private void Start()
     //{
-        //playerInput.PlayerAction.TouchDragLook.started += callBackContext => StartTouchPrimary(callBackContext);
-        //playerInput.PlayerAction.TouchDragLook.performed += callBackContext => EndTouchPrimary(callBackContext);
+    //playerInput.PlayerAction.TouchDragLook.started += callBackContext => StartTouchPrimary(callBackContext);
+    //playerInput.PlayerAction.TouchDragLook.performed += callBackContext => EndTouchPrimary(callBackContext);
     //}
 
     //private void Update()
@@ -72,11 +82,11 @@ public class InputManager : MonoBehaviour
 
     //void StartTouchPrimary(InputAction.CallbackContext context)
     //{
-        //InputActionPhase tPhase = playerInput.PlayerAction.TouchDragLook.phase;
-        //Debug.Log(tPhase.ToString());
+    //InputActionPhase tPhase = playerInput.PlayerAction.TouchDragLook.phase;
+    //Debug.Log(tPhase.ToString());
 
-        //dragTouch = context.ReadValue<TouchState>().delta;
-        //Debug.Log("Input Manager subscribe drag:" + dragTouch);
+    //dragTouch = context.ReadValue<TouchState>().delta;
+    //Debug.Log("Input Manager subscribe drag:" + dragTouch);
     //}
 
     //void EndTouchPrimary(InputAction.CallbackContext context)

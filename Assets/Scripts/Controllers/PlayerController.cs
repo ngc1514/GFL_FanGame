@@ -12,22 +12,24 @@ using UnityEngine.UI;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
+    // Managers and controllers
+    [SerializeField] private PlayerManager playerManager;
+    private Player currentPlayer;
+
+
+    private CharacterController characterController;
+    private Vector3 playerVelocity;
+    private bool groundedPlayer;
     [SerializeField] private float playerSpeed = 20f;
     [SerializeField] private float jumpHeight = 1.0f;
     [SerializeField] private float gravityValue = -9.81f;
     [SerializeField] private float rotationSpeed = 4f;
-    [SerializeField] private Transform gunChildObj; //for rotating player when rotate camera
+    // move in direction of cam
+    private Transform cameraMain;
 
-
-    // Managers and controllers
-    [SerializeField] private PlayerManager playerManager;
-    private CharacterController characterController;
-
-
-    private Player currentPlayer;
-    private Vector3 playerVelocity;
-    private Transform cameraMain; // move in direction of cam
-    private bool groundedPlayer;
+    //for rotating player when rotate camera
+    [SerializeField] private Transform gunChildObj;
+    [SerializeField] private Transform playerModelObj;
 
 
     private void Awake()
@@ -53,26 +55,37 @@ public class PlayerController : MonoBehaviour
 
         if (characterController == null)
         {
-            Debug.LogError("CharacterController is nulL");
+            Debug.LogError("characterController is nulL");
         }
 
         if(InputManager.Instance == null)
         {
-            Debug.LogError("InputManager Instance is null");
+            Debug.LogError("InputManager.Instance is null. Check InputManager before proceeding.");
         }
         else
         {
             // subscribe to fire/reload action trigger so I don't have to use disgusting if statements
             InputManager.Instance.playerInput.PlayerAction.SingleFire.started += callBackContext => FireTrigger(callBackContext);
+            InputManager.Instance.playerInput.PlayerAction.HoldFire.started += callBackContext => HoldFireTrigger(callBackContext);
             InputManager.Instance.playerInput.PlayerAction.Reload.started += callBackContext => ReloadTrigger(callBackContext);
         }
 
         cameraMain = Camera.main.transform;
-        //gunChildObj = transform.GetChild(0).transform; 
+        playerModelObj = currentPlayer.transform;
+        //Debug.Log($"playerObj name: {playerModelObj.gameObject.name}");
+
+        // DOING: add get gunChildObj code without using drag drop
+
         if (gunChildObj == null)
         {
-            Debug.LogError("Gun child obj null!");
+            Debug.LogError("gunChildObj is null!");
         }
+        if(playerModelObj == null)
+        {
+            Debug.LogError("playerModelObj is null!");
+        }
+
+        // TODO: automatic assign follow/look object at for cinemachine
     }
 
     void Update()
@@ -85,16 +98,14 @@ public class PlayerController : MonoBehaviour
             playerVelocity.y = 0f;
         }
 
-        Vector2 movementInput = InputManager.Instance.playerInput.PlayerAction.Move.ReadValue<Vector2>(); //playerInput.PlayerAction.Move.ReadValue<Vector2>();
-        
+        Vector2 movementInput = InputManager.Instance.playerInput.PlayerAction.Move.ReadValue<Vector2>();
         // move in direction of cam
         Vector3 move = (cameraMain.forward * movementInput.y + cameraMain.right * movementInput.x); 
-        move.y = 0;
-        // FIXME: FIX WHY PLAYER WONT ROTATE!!!!
+        move.y = 0f;
         characterController.Move(move * Time.deltaTime * playerSpeed); 
 
         // Gravity physics
-        if (InputManager.Instance.playerInput.PlayerAction.Jump.triggered && groundedPlayer) // playerInput.PlayerAction.Jump.triggered && groundedPlayer) 
+        if (InputManager.Instance.playerInput.PlayerAction.Jump.triggered && groundedPlayer) 
         {
             playerVelocity.y += Mathf.Sqrt(jumpHeight * -2.0f * gravityValue);
         }
@@ -102,10 +113,12 @@ public class PlayerController : MonoBehaviour
         characterController.Move(playerVelocity * Time.deltaTime);
 
         // Rotate cam when rotating player
+        // FIXME: when draggin look, move stick becomes hard to control?
         if (movementInput != Vector2.zero){
             Quaternion newRotation = Quaternion.Euler(new Vector3(gunChildObj.localEulerAngles.x, 
                                                                     cameraMain.localEulerAngles.y,
                                                                     gunChildObj.localEulerAngles.z));
+            playerModelObj.rotation = Quaternion.Lerp(playerModelObj.rotation, newRotation, Time.deltaTime * rotationSpeed);
             gunChildObj.rotation = Quaternion.Lerp(gunChildObj.rotation, newRotation, Time.deltaTime * rotationSpeed);
         }
         #endregion
@@ -113,7 +126,7 @@ public class PlayerController : MonoBehaviour
 
 
     #region Weapon fire and reload
-    // FIXME: button hit same place wont fire again! 
+    // FIXLater: button hit same place wont fire again! 
     void FireTrigger(InputAction.CallbackContext context)
     {
         //Debug.Log($"Action: {context.action}");
@@ -135,7 +148,6 @@ public class PlayerController : MonoBehaviour
     // TODO: Hold to keep shooting holdFire
     void HoldFireTrigger(InputAction.CallbackContext context)
     {
-
     }
     #endregion
 

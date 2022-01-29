@@ -47,6 +47,8 @@ public class Weapon : MonoBehaviour
         if(CurrentAmmo > 0)
         {
             CurrentAmmo -= 1;
+            Debug.Log(string.Format("Firing! {0}/{1}", CurrentAmmo, TotalAmmoRemain));
+            UIController.Instance.UpdateDebug(string.Format("Firing! {0}/{1}", CurrentAmmo, TotalAmmoRemain));
         }
         else
         {
@@ -68,6 +70,7 @@ public class Weapon : MonoBehaviour
             TotalAmmoRemain = 0;
         }
         Debug.Log(string.Format("Reloading! {0}/{1}", CurrentAmmo, TotalAmmoRemain));
+        UIController.Instance.UpdateDebug(string.Format("Reloading! {0}/{1}", CurrentAmmo, TotalAmmoRemain));
     }
 
 

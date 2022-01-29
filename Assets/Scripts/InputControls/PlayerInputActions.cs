@@ -29,16 +29,16 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
             ""actions"": [
                 {
                     ""name"": ""TouchDragLook"",
-                    ""type"": ""Value"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""a08754a1-3e3c-4a25-ba1b-4b2e50362070"",
                     ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
+                    ""processors"": ""LookBtn"",
                     ""interactions"": """",
                     ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""TouchDragLookStick"",
-                    ""type"": ""Value"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""03a6fef5-ce68-4867-ada8-e571bd7c0895"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
@@ -46,7 +46,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
-                    ""name"": ""Nothing"",
+                    ""name"": ""NoAction"",
                     ""type"": ""Value"",
                     ""id"": ""1ccc01d9-ff3f-4f0a-993e-afa6c3f13c23"",
                     ""expectedControlType"": """",
@@ -74,11 +74,11 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""SingleFire"",
-                    ""type"": ""Button"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""0f8ea825-60b8-4f6c-8479-0dc02054a0e0"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Press(pressPoint=0.1)"",
+                    ""interactions"": ""Press(pressPoint=1.401298E-45)"",
                     ""initialStateCheck"": true
                 },
                 {
@@ -240,7 +240,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Nothing"",
+                    ""action"": ""NoAction"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -253,7 +253,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         m_PlayerAction = asset.FindActionMap("PlayerAction", throwIfNotFound: true);
         m_PlayerAction_TouchDragLook = m_PlayerAction.FindAction("TouchDragLook", throwIfNotFound: true);
         m_PlayerAction_TouchDragLookStick = m_PlayerAction.FindAction("TouchDragLookStick", throwIfNotFound: true);
-        m_PlayerAction_Nothing = m_PlayerAction.FindAction("Nothing", throwIfNotFound: true);
+        m_PlayerAction_NoAction = m_PlayerAction.FindAction("NoAction", throwIfNotFound: true);
         m_PlayerAction_Move = m_PlayerAction.FindAction("Move", throwIfNotFound: true);
         m_PlayerAction_Jump = m_PlayerAction.FindAction("Jump", throwIfNotFound: true);
         m_PlayerAction_SingleFire = m_PlayerAction.FindAction("SingleFire", throwIfNotFound: true);
@@ -320,7 +320,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     private IPlayerActionActions m_PlayerActionActionsCallbackInterface;
     private readonly InputAction m_PlayerAction_TouchDragLook;
     private readonly InputAction m_PlayerAction_TouchDragLookStick;
-    private readonly InputAction m_PlayerAction_Nothing;
+    private readonly InputAction m_PlayerAction_NoAction;
     private readonly InputAction m_PlayerAction_Move;
     private readonly InputAction m_PlayerAction_Jump;
     private readonly InputAction m_PlayerAction_SingleFire;
@@ -332,7 +332,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
         public PlayerActionActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @TouchDragLook => m_Wrapper.m_PlayerAction_TouchDragLook;
         public InputAction @TouchDragLookStick => m_Wrapper.m_PlayerAction_TouchDragLookStick;
-        public InputAction @Nothing => m_Wrapper.m_PlayerAction_Nothing;
+        public InputAction @NoAction => m_Wrapper.m_PlayerAction_NoAction;
         public InputAction @Move => m_Wrapper.m_PlayerAction_Move;
         public InputAction @Jump => m_Wrapper.m_PlayerAction_Jump;
         public InputAction @SingleFire => m_Wrapper.m_PlayerAction_SingleFire;
@@ -353,9 +353,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @TouchDragLookStick.started -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnTouchDragLookStick;
                 @TouchDragLookStick.performed -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnTouchDragLookStick;
                 @TouchDragLookStick.canceled -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnTouchDragLookStick;
-                @Nothing.started -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnNothing;
-                @Nothing.performed -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnNothing;
-                @Nothing.canceled -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnNothing;
+                @NoAction.started -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnNoAction;
+                @NoAction.performed -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnNoAction;
+                @NoAction.canceled -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnNoAction;
                 @Move.started -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnMove;
                 @Move.performed -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnMove;
                 @Move.canceled -= m_Wrapper.m_PlayerActionActionsCallbackInterface.OnMove;
@@ -381,9 +381,9 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
                 @TouchDragLookStick.started += instance.OnTouchDragLookStick;
                 @TouchDragLookStick.performed += instance.OnTouchDragLookStick;
                 @TouchDragLookStick.canceled += instance.OnTouchDragLookStick;
-                @Nothing.started += instance.OnNothing;
-                @Nothing.performed += instance.OnNothing;
-                @Nothing.canceled += instance.OnNothing;
+                @NoAction.started += instance.OnNoAction;
+                @NoAction.performed += instance.OnNoAction;
+                @NoAction.canceled += instance.OnNoAction;
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
@@ -407,7 +407,7 @@ public partial class @PlayerInputActions : IInputActionCollection2, IDisposable
     {
         void OnTouchDragLook(InputAction.CallbackContext context);
         void OnTouchDragLookStick(InputAction.CallbackContext context);
-        void OnNothing(InputAction.CallbackContext context);
+        void OnNoAction(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnSingleFire(InputAction.CallbackContext context);
