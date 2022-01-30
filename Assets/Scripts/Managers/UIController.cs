@@ -11,14 +11,13 @@ public class UIController : MonoBehaviour
     public static UIController Instance { get { return _instance; } }
     #endregion
 
-
     [SerializeField] private Text ammoCountText;
     [SerializeField] private PlayerManager playerManager;
 
+    private Player currentPlayer;
 
     [SerializeField] public Text debugText;
 
-    private Player currentPlayer;
 
     private void Awake()
     {
@@ -77,3 +76,4 @@ public class UIController : MonoBehaviour
 
 
 }
+    

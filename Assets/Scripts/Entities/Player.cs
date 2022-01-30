@@ -13,12 +13,15 @@ public class Player : MonoBehaviour
     public int Health { get; private set; } = 1000;
     public int CurrentWeaponIndex { get; private set; } // 0-main, 1-side, 2-melee?
     protected Dictionary<string, Weapon> weaponSlotDict = new Dictionary<string, Weapon>();
-    
+
+    // Used to limit fire rate
+    public bool isHoldingFire = false;
+    public bool canShootNext = true;
     
     // TODO: Instantiate weapon object to player's parent and assign model ETC in the future
     private void Awake()
     {
-        Weapon main = Weapon.CreateWeapon(this.gameObject, "m4a1", 30, 30, 90);
+        Weapon main = Weapon.CreateWeapon(this.gameObject, "m4a1", 0.076f, 30, 30, 90);
         NullWeapon side = NullWeapon.CreateWeapon(this.gameObject);
         NullWeapon melee = NullWeapon.CreateWeapon(this.gameObject);
 
@@ -36,7 +39,6 @@ public class Player : MonoBehaviour
     {
         return weaponSlotDict;
     }
-
 
     public Weapon GetCurrentWeapon()
     {
@@ -61,7 +63,7 @@ public class Player : MonoBehaviour
         CurrentWeaponIndex = Mathf.Abs((CurrentWeaponIndex - 1) % 3);
 
         // TODO: call UIManager to change weapon UI, ammo, etc
-        // TODO: call PlayerController to swtich current weapon? - animation? but i thought it is done here? 
+        // TODO: then call PlayerController to swtich current weapon? - animation? but i thought it is done here? 
     }
 
 
@@ -69,6 +71,15 @@ public class Player : MonoBehaviour
 
 
     // TODO: pick up weapon? throw weapon? 
+    void ThrowWeapon()
+    {
+
+    }
+
+    void PickUpWeapon()
+    {
+
+    }
 
 
 }
