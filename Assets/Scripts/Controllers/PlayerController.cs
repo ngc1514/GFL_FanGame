@@ -170,7 +170,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // FIXLater: button hit same place wont fire again! 
+    // FIXLater: button hit same place wont fire again!
     void ReloadTrigger(InputAction.CallbackContext context)
     {
         currentPlayer.GetCurrentWeapon().Reload();
