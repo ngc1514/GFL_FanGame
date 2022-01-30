@@ -8,21 +8,16 @@ public class Weapon : MonoBehaviour
     public int CurrentAmmo { get; set; }
     public int TotalAmmoRemain { get; set; }
     public int MagSize { get; set; }
+    public float Rpm { get; set; }
     public AudioSource audioSource;
 
 
-    //public Weapon(string name, int mag, int total)
-    //{
-    //    Name = name;
-    //    MagSize = mag;
-    //    TotalAmmoRemain = total;
-    //}
-
-    public static Weapon CreateWeapon(GameObject playerObject, string name, int currentAmmo, int mag, int total)
+    public static Weapon CreateWeapon(GameObject playerObject, string name, float rpm, int currentAmmo, int mag, int total)
     {
         Weapon thisWeapon = playerObject.AddComponent<Weapon>();
         thisWeapon.Name = name;
         thisWeapon.MagSize = mag;
+        thisWeapon.Rpm = rpm;
         if(currentAmmo > mag)
         {
             Debug.LogError("Current ammo is more than Mag size!! Setting to mag size.");
@@ -35,7 +30,6 @@ public class Weapon : MonoBehaviour
         thisWeapon.TotalAmmoRemain = total;
         return thisWeapon;
     }
-
 
     public void SetCurrentAmmo(int cur)
     {
@@ -52,7 +46,7 @@ public class Weapon : MonoBehaviour
         }
         else
         {
-            Debug.LogError("No more ammo!");
+            Debug.Log("Mag Empty!");
         }
     }
 
@@ -72,7 +66,6 @@ public class Weapon : MonoBehaviour
         Debug.Log(string.Format("Reloading! {0}/{1}", CurrentAmmo, TotalAmmoRemain));
         UIController.Instance.UpdateDebug(string.Format("Reloading! {0}/{1}", CurrentAmmo, TotalAmmoRemain));
     }
-
 
 
 

@@ -7,6 +7,10 @@ TagManager:
   - ControlManager
   - VRUIAccent
   - Data_ui
+  - Weapon
+  - Env
+  - Ground
+  - Physical
   layers:
   - Default
   - TransparentFX
@@ -16,8 +20,8 @@ TagManager:
   - UI
   - 
   - 
-  - Ground
-  - 
+  - Env
+  - phyobj
   - 
   - 
   - 

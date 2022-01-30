@@ -1667,7 +1667,7 @@ Transform:
   m_GameObject: {fileID: 2998810429193360626}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.9, y: 1, z: 0.9}
   m_Children:
   - {fileID: 2998810428756872160}
   - {fileID: 2998810428212300859}
@@ -1705,12 +1705,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 307b467302d75524daa72d8660757c74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerManager: {fileID: 0}
   playerSpeed: 6
   jumpHeight: 1
   gravityValue: -9.81
   rotationSpeed: 4
   gunChildObj: {fileID: 2998810428212300859}
-  playerManager: {fileID: 0}
+  playerModelObj: {fileID: 0}
 --- !u!114 &2998810429193360625
 MonoBehaviour:
   m_ObjectHideFlags: 0

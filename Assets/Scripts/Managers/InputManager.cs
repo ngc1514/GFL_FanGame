@@ -9,7 +9,9 @@ using UnityEngine.InputSystem.LowLevel;
  * NOTE: contain some touch screen control concept. Might be helpful in the future. 
  */
 
-[DefaultExecutionOrder(-2)]
+// TODO: Hold input threshold will be dynamically set based on weapon rpm
+
+[DefaultExecutionOrder(-1)]
 public class InputManager : MonoBehaviour
 {
     #region Singleton
@@ -18,10 +20,10 @@ public class InputManager : MonoBehaviour
     #endregion
 
     public PlayerInputActions playerInput;
-
     // Detect if dragging look btn
-    public bool IsDraggingLookBtn { get; private set; }
-
+    public bool IsDraggingLookBtn { get; private set; } = false;
+    // if already pressed Aim
+    public bool IsAimPressed { get; private set; } = false;
 
     //public Vector2 dragTouch;
     //public delegate void StartTouch(Vector2 position, float time);
@@ -64,6 +66,11 @@ public class InputManager : MonoBehaviour
     public void SetDraggingLookBtnVal(bool inVal)
     {
         IsDraggingLookBtn = inVal;
+    }
+
+    public void SetAimPressedVal(bool inVal)
+    {
+        IsAimPressed = inVal;
     }
 
 
