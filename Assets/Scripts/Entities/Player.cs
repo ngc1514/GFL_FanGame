@@ -15,15 +15,16 @@ public class Player : MonoBehaviour
     protected Dictionary<string, Weapon> weaponSlotDict = new Dictionary<string, Weapon>();
 
     // Used to limit fire rate
-    public bool isHoldingFire = false;
-    public bool canShootNext = true;
-    
+    public bool CanShootNext { get; set; } = true;
+    public bool IsHoldingFire { get; set; } = false;
+
+
     // TODO: Instantiate weapon object to player's parent and assign model ETC in the future
     private void Awake()
     {
-        Weapon main = Weapon.CreateWeapon(this.gameObject, "m4a1", 0.076f, 30, 30, 90);
-        NullWeapon side = NullWeapon.CreateWeapon(this.gameObject);
-        NullWeapon melee = NullWeapon.CreateWeapon(this.gameObject);
+        Weapon main = WeaponManager.Instance.CreateWeapon(typeof(Rifle), this.gameObject, "m4a1", 0.076f, 30, 30, 90);  //Weapon.CreateWeapon(this.gameObject, "m4a1", 0.076f, 30, 30, 90);
+        Weapon side = WeaponManager.Instance.CreateWeapon(typeof(Knife), this.gameObject, "naifu", 1, 30, 30, 90); //NullWeapon.CreateWeapon(this.gameObject);
+        NullWeapon melee = WeaponManager.Instance.CreateNullWeapon(this.gameObject); // NullWeapon.CreateWeapon(this.gameObject);
 
         weaponSlotDict.Add("main", main);
         weaponSlotDict.Add("side", side);
@@ -50,7 +51,7 @@ public class Player : MonoBehaviour
             case 1: return weaponSlotDict["side"];
             case 2: return weaponSlotDict["melee"];
             default:
-                Debug.LogError("You are trying to access a weapon slot key that doesn't exist!");
+                Debug.LogError("You are trying to access a weapon slot index that doesn't exist!");
                 return new NullWeapon();
         }
     }

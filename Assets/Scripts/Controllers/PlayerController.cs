@@ -47,6 +47,24 @@ public class PlayerController : MonoBehaviour
     }
 
 
+    private void OnEnable()
+    {
+        if (InputManager.Instance == null)
+        {
+            Debug.LogError("InputManager.Instance is null. Check InputManager before proceeding.");
+        }
+        else
+        {
+            // subscribe to fire/reload action trigger so I don't have to use disgusting if statements
+            InputManager.Instance.playerInput.PlayerAction.HoldFire.started += callBackContext => SingleFireTrigger(); // callBackContext);
+            InputManager.Instance.playerInput.PlayerAction.HoldFire.performed += callBackContext => LongFireTrigger(); // callBackContext);
+            InputManager.Instance.playerInput.PlayerAction.HoldFire.canceled += callBackContext => HoldFinished(); // callBackContext);
+
+            InputManager.Instance.playerInput.PlayerAction.Reload.started += callBackContext => ReloadTrigger(callBackContext);
+        }
+    }
+
+
     private void Start()
     {
         currentPlayer = playerManager.GetCurrentPlayer();
@@ -67,7 +85,7 @@ public class PlayerController : MonoBehaviour
         {
             Debug.LogError("gunChildObj is null!");
         }
-        if(playerModelObj == null)
+        if (playerModelObj == null)
         {
             Debug.LogError("playerModelObj is null!");
         }
@@ -75,28 +93,12 @@ public class PlayerController : MonoBehaviour
         // TODO: automatic assign follow/look object at for cinemachine
     }
 
-    private void OnEnable()
-    {
-        if (InputManager.Instance == null)
-        {
-            Debug.LogError("InputManager.Instance is null. Check InputManager before proceeding.");
-        }
-        else
-        {
-            // subscribe to fire/reload action trigger so I don't have to use disgusting if statements
-            InputManager.Instance.playerInput.PlayerAction.HoldFire.started += callBackContext => SingleFireTrigger(); // callBackContext);
-            InputManager.Instance.playerInput.PlayerAction.HoldFire.performed += callBackContext => LongFireTrigger(); // callBackContext);
-            InputManager.Instance.playerInput.PlayerAction.HoldFire.canceled += callBackContext => HoldFinished(); // callBackContext);
-
-            InputManager.Instance.playerInput.PlayerAction.Reload.started += callBackContext => ReloadTrigger(callBackContext);
-        }
-    }
 
     void Update()
     {
         #region Player movement and camera control
         // Modified from Unity Manual Move code
-        groundedPlayer = characterController.isGrounded;
+        groundedPlayer = characterController.isGrounded; // FIXME: jump not actiavted randomly
         if (groundedPlayer && playerVelocity.y < 0)
         {
             playerVelocity.y = 0f;
@@ -108,7 +110,7 @@ public class PlayerController : MonoBehaviour
         move.y = 0f;
         characterController.Move(move * Time.deltaTime * playerSpeed); 
 
-        // Gravity physics
+        // Gravity physicsz
         if (InputManager.Instance.playerInput.PlayerAction.Jump.triggered && groundedPlayer) 
         {
             playerVelocity.y += Mathf.Sqrt(jumpHeight * -2.0f * gravityValue);
@@ -116,31 +118,35 @@ public class PlayerController : MonoBehaviour
         playerVelocity.y += gravityValue * Time.deltaTime;
         characterController.Move(playerVelocity * Time.deltaTime);
 
-        // Rotate toward new direction after moving 
-        //if (movementInput != Vector2.zero){
-        //    Quaternion newRotation = Quaternion.Euler(new Vector3(gunChildObj.localEulerAngles.x, 
-        //                                                            cameraMain.localEulerAngles.y,
-        //                                                            gunChildObj.localEulerAngles.z));
-        //    playerModelObj.rotation = Quaternion.Lerp(playerModelObj.rotation, newRotation, Time.deltaTime * rotationSpeed);
-        //    gunChildObj.rotation = Quaternion.Lerp(gunChildObj.rotation, newRotation, Time.deltaTime * rotationSpeed); // FIXME: can be a bit faster
-        //}
-
-        // Rotate toward cam direction
-        Quaternion newRotation = Quaternion.Euler(new Vector3(gunChildObj.localEulerAngles.x,
-                                                                    cameraMain.localEulerAngles.y,
-                                                                    gunChildObj.localEulerAngles.z));
-        playerModelObj.rotation = Quaternion.Lerp(playerModelObj.rotation, newRotation, Time.deltaTime * playerRotationSpeed);
-        // FIXME: gun rotate can be a bit faster?
-        // FIXME: gun needs to be parallel with aim cam at all time
-        gunChildObj.rotation = Quaternion.Lerp(gunChildObj.rotation, newRotation, Time.deltaTime * gunRotationSpeed);
+        // Two modes of rotation for Aim and 3rd
+        // Aim: Rotate toward cam direction
+        if (InputManager.Instance.IsAimPressed)
+        {
+            Quaternion newRotation = Quaternion.Euler(new Vector3(gunChildObj.localEulerAngles.x,
+                                                                        cameraMain.localEulerAngles.y,
+                                                                        gunChildObj.localEulerAngles.z));
+            playerModelObj.rotation = Quaternion.Lerp(playerModelObj.rotation, newRotation, Time.deltaTime * playerRotationSpeed);
+            gunChildObj.rotation = Quaternion.Lerp(gunChildObj.rotation, newRotation, Time.deltaTime * gunRotationSpeed);
+        }
+        // 3rd person: rotate toward new direction only after moving 
+        else
+        {
+            if (movementInput != Vector2.zero)
+            {
+                Quaternion newRotation = Quaternion.Euler(new Vector3(gunChildObj.localEulerAngles.x,
+                                                                        cameraMain.localEulerAngles.y,
+                                                                        gunChildObj.localEulerAngles.z));
+                playerModelObj.rotation = Quaternion.Lerp(playerModelObj.rotation, newRotation, Time.deltaTime * playerRotationSpeed);
+                gunChildObj.rotation = Quaternion.Lerp(gunChildObj.rotation, newRotation, Time.deltaTime * gunRotationSpeed); // FIXME: can be a bit faster
+            }
+        }
         #endregion
 
         // fire rate regulator
-        if (currentPlayer.isHoldingFire && currentPlayer.canShootNext)
+        if (currentPlayer.IsHoldingFire && currentPlayer.CanShootNext)
         {
             StartCoroutine(LimitFireRate());
         }
-
 
     }
 
@@ -148,7 +154,16 @@ public class PlayerController : MonoBehaviour
     #region Weapon control
     void SingleFireTrigger()// InputAction.CallbackContext context)
     {
-        currentPlayer.GetCurrentWeapon().FireOne();
+        currentPlayer.GetCurrentWeapon().Attack();
+
+        // TODO: fire projectile, organize code structure later, get it working first
+        //RaycastHit hit;
+        //// TODO: change infinity to a finite distance for bullet drop
+        //if (Physics.Raycast(cameraMain.position, cameraMain.forward, out hit, Mathf.Infinity))
+        //{
+
+        //}
+
         //AudioManager.Instance.PlayGunSound(currentPlayer.GetCurrentWeapon()); 
         UIController.Instance.UpdateAmmoText();
     }
@@ -156,25 +171,28 @@ public class PlayerController : MonoBehaviour
     void LongFireTrigger() //InputAction.CallbackContext context)
     {
         //Debug.Log("Holding");
-        currentPlayer.isHoldingFire = true;
-        currentPlayer.canShootNext = true;
+        currentPlayer.IsHoldingFire = true;
+        currentPlayer.CanShootNext = true;
     }
 
     void HoldFinished() //InputAction.CallbackContext context)
     {
         //Debug.Log("Hold done");
-        currentPlayer.canShootNext = false;
-        if (currentPlayer.isHoldingFire)
+        currentPlayer.CanShootNext = false;
+        if (currentPlayer.IsHoldingFire)
         {
-            currentPlayer.isHoldingFire = false;
+            currentPlayer.IsHoldingFire = false;
         }
     }
 
     // FIXLater: button hit same place wont fire again!
     void ReloadTrigger(InputAction.CallbackContext context)
     {
-        currentPlayer.GetCurrentWeapon().Reload();
-        UIController.Instance.UpdateAmmoText();
+        if (currentPlayer.GetCurrentWeapon().IsShootable)
+        {
+            currentPlayer.GetCurrentWeapon().Reload();
+            UIController.Instance.UpdateAmmoText();
+        }
     }
 
     // fire rate controll
@@ -182,9 +200,9 @@ public class PlayerController : MonoBehaviour
     {
         //Debug.Log("fire rate limit");
         SingleFireTrigger();
-        currentPlayer.canShootNext = false;
+        currentPlayer.CanShootNext = false;
         yield return new WaitForSeconds(currentPlayer.GetCurrentWeapon().Rpm);
-        currentPlayer.canShootNext = true;
+        currentPlayer.CanShootNext = true;
     }
     #endregion
 

@@ -3,21 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /*
- * Empty weapon. 
+ * Empty weapon - 0 ammo. Made it IReloadable so its easier to debug for now. 
  */
 
-public class NullWeapon : Weapon
+public class NullWeapon : Weapon //, IReloadable
 {
-    public NullWeapon() { }
+    public override string Name { get; set; }
+    public override bool IsShootable { get; } = false;
+    public override float Rpm { get; set; } = 0f;
 
-    public static NullWeapon CreateWeapon(GameObject playerObject)
+    public override int CurrentAmmo { get; set; } = 0;
+    public override int TotalAmmoRemain { get; set; } = 0;
+    public override  int MagSize { get; set; } = 0;
+
+    public override void Attack()
     {
-        NullWeapon thisWeapon = playerObject.AddComponent<NullWeapon>();
-        thisWeapon.Name = "nullweapon";
-        thisWeapon.MagSize = 0;
-        thisWeapon.CurrentAmmo = 0;
-        thisWeapon.TotalAmmoRemain = 0;
-        return thisWeapon;
+        Debug.Log("Useless attack");
     }
 
+    public override void Reload()
+    {
+        Debug.Log("Null reload");
+    }
 }
