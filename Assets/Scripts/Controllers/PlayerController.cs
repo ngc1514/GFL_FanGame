@@ -157,12 +157,22 @@ public class PlayerController : MonoBehaviour
         currentPlayer.GetCurrentWeapon().Attack();
 
         // TODO: fire projectile, organize code structure later, get it working first
-        //RaycastHit hit;
-        //// TODO: change infinity to a finite distance for bullet drop
-        //if (Physics.Raycast(cameraMain.position, cameraMain.forward, out hit, Mathf.Infinity))
-        //{
+        RaycastHit hit;
+        GameObject bullet = GameObject.Instantiate(WeaponManager.Instance.projectilePrefab, WeaponManager.Instance.barrelTransform.position, Quaternion.identity, WeaponManager.Instance.projectileParent);
+        ProjectileController projectileController = bullet.GetComponent<ProjectileController>(); // FIXME: each bullet has a ProjectTileController script
 
-        //}
+        // TODO: change infinity to a finite distance for bullet drop
+        if (Physics.Raycast(cameraMain.position, cameraMain.forward, out hit, Mathf.Infinity))
+        {
+            projectileController.Target = hit.point;
+            projectileController.Hit = true;
+        }
+        else
+        {
+            // FIXME: make a var for 25 bulletHitMissDistance
+            projectileController.Target = cameraMain.position + cameraMain.forward * 25; // starting from cam pos, and go forward // not hit? shoot it to a striaght random point pointed by camera
+            projectileController.Hit = true;
+        }
 
         //AudioManager.Instance.PlayGunSound(currentPlayer.GetCurrentWeapon()); 
         UIController.Instance.UpdateAmmoText();

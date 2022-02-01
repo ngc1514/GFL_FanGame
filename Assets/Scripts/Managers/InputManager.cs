@@ -50,6 +50,10 @@ public class InputManager : MonoBehaviour
         {
             Debug.LogError("PlayerInputActions not activating");
         }
+        else
+        {
+            Debug.Log("Initializing InputManager");
+        }
 
     }
 

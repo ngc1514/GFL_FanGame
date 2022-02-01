@@ -21,7 +21,8 @@ public class Player : MonoBehaviour
 
     // TODO: Instantiate weapon object to player's parent and assign model ETC in the future
     private void Awake()
-    {
+    { 
+        // Test to spawn weapon at beginning
         Weapon main = WeaponManager.Instance.CreateWeapon(typeof(Rifle), this.gameObject, "m4a1", 0.076f, 30, 30, 90);  //Weapon.CreateWeapon(this.gameObject, "m4a1", 0.076f, 30, 30, 90);
         Weapon side = WeaponManager.Instance.CreateWeapon(typeof(Knife), this.gameObject, "naifu", 1, 30, 30, 90); //NullWeapon.CreateWeapon(this.gameObject);
         NullWeapon melee = WeaponManager.Instance.CreateNullWeapon(this.gameObject); // NullWeapon.CreateWeapon(this.gameObject);

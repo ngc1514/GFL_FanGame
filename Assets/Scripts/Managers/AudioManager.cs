@@ -9,6 +9,19 @@ public class AudioManager : MonoBehaviour
     public static AudioManager Instance { get { return _instance; } }
     #endregion
 
+
+    #region audio path
+    private readonly string weaponAudioPath = "Audio/Weapons/";
+    #endregion
+
+    public Dictionary<string, AudioSource> AudioDict { get; set; } = new Dictionary<string, AudioSource>();
+
+
+    #region audio object
+    // TODO: make different audio resource for different guns
+    private AudioSource audio_rifle;
+    #endregion
+
     private void Awake()
     {
         #region Singleton Awake
@@ -20,6 +33,13 @@ public class AudioManager : MonoBehaviour
         {
             _instance = this;
         }
+        #endregion
+        Debug.Log("Initializing AudioManager");
+
+
+        #region audio resources
+        audio_rifle = Resources.Load<AudioSource>(weaponAudioPath + "ar_1p_01");
+        AudioDict.Add("audio_rifle", audio_rifle);
         #endregion
     }
 

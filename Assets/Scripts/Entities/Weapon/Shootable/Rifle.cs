@@ -3,23 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Rifle : Weapon //, IReloadable
+public class Rifle : Weapon, IShootable
 {
     public override string Name { get; set; }
     public override bool IsShootable { get; } = true;
     public override float Rpm { get; set; }
-
     public override int CurrentAmmo { get; set; }
     public override int TotalAmmoRemain { get; set; }
     public override int MagSize { get; set; }
 
-    private void OnEnable()
-    {
-        if (bulletPrefab = null)
-        {
-            Debug.LogError("bulletPrefab is null");
-        }
-    }
+    // TODO: caliber future use
+    //public int Caliber { get; set; } 
+
+    //private void Start()
+    //{
+    //    if (this.projectilePrefab = null)
+    //    {
+    //        Debug.LogError("bulletPrefab is null");
+    //    }
+    //}
 
     public override void Attack()
     {

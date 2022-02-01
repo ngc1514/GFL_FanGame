@@ -30,6 +30,7 @@ public class PlayerManager : MonoBehaviour
             //Instantiate(playerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
             //player = playerPrefab.GetComponent<Player>();
         }
+        Debug.Log("Initializing PlayerManager");
     }
 
     //private void Start()
