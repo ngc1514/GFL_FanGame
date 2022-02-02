@@ -18,18 +18,25 @@ public class Player : MonoBehaviour
     public bool CanShootNext { get; set; } = true;
     public bool IsHoldingFire { get; set; } = false;
 
+    [SerializeField] private GameObject WeaponWrapper;
+    [SerializeField] private GameObject ModelWrapper;
 
     // TODO: Instantiate weapon object to player's parent and assign model ETC in the future
     private void Awake()
     { 
         // Test to spawn weapon at beginning
         Weapon main = WeaponManager.Instance.CreateWeapon(typeof(Rifle), this.gameObject, "m4a1", 0.076f, 30, 30, 90);  //Weapon.CreateWeapon(this.gameObject, "m4a1", 0.076f, 30, 30, 90);
-        Weapon side = WeaponManager.Instance.CreateWeapon(typeof(Knife), this.gameObject, "naifu", 1, 30, 30, 90); //NullWeapon.CreateWeapon(this.gameObject);
+        Weapon side = WeaponManager.Instance.CreateWeapon(typeof(Pistol), this.gameObject, "m1911", 1f, 11, 11, 33); //NullWeapon.CreateWeapon(this.gameObject);
         NullWeapon melee = WeaponManager.Instance.CreateNullWeapon(this.gameObject); // NullWeapon.CreateWeapon(this.gameObject);
+
+        GameObject charModel = ResourceManager.Instance.GetCharModel("ump9");
 
         weaponSlotDict.Add("main", main);
         weaponSlotDict.Add("side", side);
         weaponSlotDict.Add("melee", melee);
+
+        Instantiate(main.weaponPrefab).transform.parent = WeaponWrapper.transform;
+        Instantiate(charModel).transform.parent = ModelWrapper.transform;
 
         //foreach (KeyValuePair<string, Weapon> kvp in weaponSlotDict)
         //{

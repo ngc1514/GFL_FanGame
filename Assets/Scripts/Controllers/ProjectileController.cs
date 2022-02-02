@@ -34,13 +34,13 @@ public class ProjectileController : MonoBehaviour
         }
     }
 
-    // fake bullet
+    // when collision, spawn bullet hole
     private void OnCollisionEnter(Collision collision)
     {
         //Debug.Log("collision enter");
         ContactPoint contact = collision.GetContact(0);
         // + contact.normal * 0.0001 so that we spawn the bulletHole decal a bit forward
-        GameObject.Instantiate(projectilDecal, contact.point + contact.normal * 0.1f, Quaternion.LookRotation(contact.normal)); // quaternion: spawn decal facing out the wall when hit, normal - perpendicular
+        GameObject.Instantiate(projectilDecal, contact.point + contact.normal * 0.01f, Quaternion.LookRotation(contact.normal)); // quaternion: spawn decal facing out the wall when hit, normal - perpendicular
         Destroy(gameObject);
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
+[DefaultExecutionOrder(-4)]
 public class UIController : MonoBehaviour
 {
     #region Singleton
@@ -45,11 +46,16 @@ public class UIController : MonoBehaviour
         {
             Debug.LogError("Ammo Text is null");
         }
-        currentPlayer = playerManager.GetCurrentPlayer();
+
+        UpdateDebug("UIController Initialized");
+        Debug.Log("UIController Initialized");
     }
+
 
     private void Start()
     {
+        currentPlayer = playerManager.GetCurrentPlayer();
+
         ammoCountText.text = string.Format("Ammo: {0}/{1}", currentPlayer.GetCurrentWeapon().CurrentAmmo, currentPlayer.GetCurrentWeapon().TotalAmmoRemain);
         //Debug.Log($"Ammo: {currentPlayer.GetCurrentWeapon().CurrentAmmo}, {currentPlayer.GetCurrentWeapon().TotalAmmoRemain}");
     }

@@ -90,7 +90,7 @@ public class PlayerController : MonoBehaviour
             Debug.LogError("playerModelObj is null!");
         }
 
-        // TODO: automatic assign follow/look object at for cinemachine
+        // TODO: automatic assign follow/look object at for cinemachine when spawned player
     }
 
 
@@ -137,7 +137,7 @@ public class PlayerController : MonoBehaviour
                                                                         cameraMain.localEulerAngles.y,
                                                                         gunChildObj.localEulerAngles.z));
                 playerModelObj.rotation = Quaternion.Lerp(playerModelObj.rotation, newRotation, Time.deltaTime * playerRotationSpeed);
-                gunChildObj.rotation = Quaternion.Lerp(gunChildObj.rotation, newRotation, Time.deltaTime * gunRotationSpeed); // FIXME: can be a bit faster
+                gunChildObj.rotation = Quaternion.Lerp(gunChildObj.rotation, newRotation, Time.deltaTime * gunRotationSpeed); 
             }
         }
         #endregion
@@ -154,12 +154,12 @@ public class PlayerController : MonoBehaviour
     #region Weapon control
     void SingleFireTrigger()// InputAction.CallbackContext context)
     {
-        if (currentPlayer.GetCurrentWeapon().Attack())
+        Weapon curWeapon = currentPlayer.GetCurrentWeapon();
+        if (curWeapon.Attack())
         {
-            AudioManager.Instance.PlayGunSound();
-            // TODO: organize code structure for GetPrefab() for GetCurrentWeapon()
+            AudioManager.Instance.PlayGunSound(curWeapon);
+            // TODO: use object pool, organize code structure for GetPrefab() for GetCurrentWeapon()
             RaycastHit hit;
-            // FIXME: use object pool
             GameObject bullet = GameObject.Instantiate(WeaponManager.Instance.projectilePrefab,
                                                         WeaponManager.Instance.barrelTransform.position,
                                                         Quaternion.identity, WeaponManager.Instance.projectileParent); // FIXME: bullet facing side way

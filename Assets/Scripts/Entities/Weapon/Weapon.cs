@@ -12,7 +12,7 @@ public abstract class Weapon : MonoBehaviour, IWeapon
     public abstract int TotalAmmoRemain { get; set; }
     public abstract int MagSize { get; set; }
 
-    public AudioSource audioSource;
+    public AudioClip weaponAudio;
     public GameObject weaponPrefab;
     public GameObject projectilePrefab;
     #endregion

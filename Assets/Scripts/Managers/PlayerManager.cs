@@ -26,11 +26,13 @@ public class PlayerManager : MonoBehaviour
             else
             {
                 Debug.Log($"Acquired player: {player.gameObject.name}");
+                UIController.Instance.UpdateDebug($"Acquired player: {player.gameObject.name}");
             }
             //Instantiate(playerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
             //player = playerPrefab.GetComponent<Player>();
         }
-        Debug.Log("Initializing PlayerManager");
+        Debug.Log("PlayerManager Initialized");
+        UIController.Instance.UpdateDebug("PlayerManager Initialized");
     }
 
     //private void Start()

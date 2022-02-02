@@ -52,7 +52,8 @@ public class InputManager : MonoBehaviour
         }
         else
         {
-            Debug.Log("Initializing InputManager");
+            Debug.Log("InputManager Initialized");
+            UIController.Instance.UpdateDebug("InputManager Initialized");
         }
 
     }
