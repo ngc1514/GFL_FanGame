@@ -4,6 +4,6 @@ using UnityEngine;
 
 public interface IWeapon
 {
-    void Attack();
-    void Reload();
+    bool Attack(); // FIXME: change back to void
+    bool Reload();
 }

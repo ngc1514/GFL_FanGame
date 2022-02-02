@@ -19,7 +19,7 @@ public abstract class Weapon : MonoBehaviour, IWeapon
 
 
     #region IWeapon interface methods
-    public abstract void Attack();
-    public abstract void Reload();
+    public abstract bool Attack();
+    public abstract bool Reload();
     #endregion
 }

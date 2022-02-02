@@ -23,22 +23,24 @@ public class Rifle : Weapon, IShootable
     //    }
     //}
 
-    public override void Attack()
+    public override bool Attack()
     {
         if (CurrentAmmo > 0)
         {
             CurrentAmmo -= 1;
-            Debug.Log(string.Format("Firing! {0}/{1}", CurrentAmmo, TotalAmmoRemain));
+            //Debug.Log(string.Format("Firing! {0}/{1}", CurrentAmmo, TotalAmmoRemain));
             UIController.Instance.UpdateDebug(string.Format("Firing! {0}/{1}", CurrentAmmo, TotalAmmoRemain));
+            return true;
         }
         else
         {
             Debug.Log("Mag Empty!");
+            return false;
         }
     }
 
 
-    public override void Reload()
+    public override bool Reload()
     {
         int tempTotal = CurrentAmmo + TotalAmmoRemain;
         if (tempTotal >= 30)
@@ -53,6 +55,7 @@ public class Rifle : Weapon, IShootable
         }
         Debug.Log(string.Format("Reloading! {0}/{1}", CurrentAmmo, TotalAmmoRemain));
         UIController.Instance.UpdateDebug(string.Format("Reloading! {0}/{1}", CurrentAmmo, TotalAmmoRemain));
+        return true;
     }
 
 }

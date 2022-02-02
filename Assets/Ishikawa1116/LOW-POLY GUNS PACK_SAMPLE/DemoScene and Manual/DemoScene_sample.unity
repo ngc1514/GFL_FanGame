@@ -505,19 +505,9 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1894963028252337022, guid: 25617adafaf4cd042aa2c930fbd6096f,
         type: 3}
-      propertyPath: m_BlendShapeWeights.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1894963028252337022, guid: 25617adafaf4cd042aa2c930fbd6096f,
-        type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 8ba43d49c78a14143a100157ea593d55, type: 2}
-    - target: {fileID: 1894963028252337022, guid: 25617adafaf4cd042aa2c930fbd6096f,
-        type: 3}
-      propertyPath: m_BlendShapeWeights.Array.data[0]
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3478971805774729213, guid: 25617adafaf4cd042aa2c930fbd6096f,
         type: 3}
       propertyPath: m_LocalPosition.x

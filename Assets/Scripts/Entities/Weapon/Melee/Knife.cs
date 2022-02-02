@@ -12,13 +12,15 @@ public class Knife : Weapon //, ISwingable
     public override int TotalAmmoRemain { get; set; }
     public override int MagSize { get; set; }
 
-    public override void Attack()
+    public override bool Attack()
     {
         Debug.Log("Swing");
+        return true;
     }
 
-    public override void Reload()
+    public override bool Reload()
     {
         Debug.Log("Knife can't be reloaded");
+        return true;
     }
 }

@@ -16,13 +16,15 @@ public class NullWeapon : Weapon //, IReloadable
     public override int TotalAmmoRemain { get; set; } = 0;
     public override  int MagSize { get; set; } = 0;
 
-    public override void Attack()
+    public override bool Attack()
     {
         Debug.Log("Useless attack");
+        return true;
     }
 
-    public override void Reload()
+    public override bool Reload()
     {
         Debug.Log("Null reload");
+        return true;
     }
 }
