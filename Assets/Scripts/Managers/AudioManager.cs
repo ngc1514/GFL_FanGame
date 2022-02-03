@@ -9,6 +9,11 @@ public class AudioManager : MonoBehaviour
     public static AudioManager Instance { get { return _instance; } }
     #endregion
 
+    [SerializeField] private AudioSource Source;
+
+    private AudioClip cachedAudio;
+
+
     private void Awake()
     {
         #region Singleton Awake
@@ -21,15 +26,12 @@ public class AudioManager : MonoBehaviour
             _instance = this;
         }
         #endregion
+        Debug.Log("AudioManager Initialized");
     }
 
-    // TODO: implement sound later. Need to get the sound source from corresponding gun.
-    public void PlayGunSound(Weapon gun)
+    // TODO: need more validation code
+    public void PlayGunSound(Weapon curGun)
     {
-        if(gun.audioSource == null)
-        {
-            Debug.LogError("No gun audio source found!");
-        }
-        gun.audioSource.Play();
+        Source.PlayOneShot(curGun.weaponAudio, 0.1f);
     }
 }

@@ -10,12 +10,27 @@ using UnityEngine;
 [DefaultExecutionOrder(-1)]
 public class PlayerManager : MonoBehaviour
 {
+    #region Singleton
+    private static PlayerManager _instance;
+    public static PlayerManager Instance { get { return _instance; } }
+    #endregion
+
+    // TODO: spawn entire Play object
     [SerializeField] private Player player;
-    //[SerializeField] private GameObject playerPrefab;
 
     private void Awake()
     {
-        //TODO: instantiate(spawn) a new player with new position, weapon prefab, and audio etc
+        #region Singleton Awake
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
+        }
+        #endregion
+
         if (player == null)
         {
             player = Object.FindObjectOfType<Player>();
@@ -26,17 +41,12 @@ public class PlayerManager : MonoBehaviour
             else
             {
                 Debug.Log($"Acquired player: {player.gameObject.name}");
+                UIController.Instance.UpdateDebug($"Acquired player: {player.gameObject.name}");
             }
-            //Instantiate(playerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-            //player = playerPrefab.GetComponent<Player>();
         }
+        Debug.Log("PlayerManager Initialized");
+        UIController.Instance.UpdateDebug("PlayerManager Initialized");
     }
-
-    //private void Start()
-    //{
-    //    Debug.Log("Activating!!!!");
-    //    player.transform.parent.gameObject.SetActive(true);
-    //}
 
 
     public Player GetCurrentPlayer()

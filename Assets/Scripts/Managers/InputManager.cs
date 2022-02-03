@@ -50,6 +50,11 @@ public class InputManager : MonoBehaviour
         {
             Debug.LogError("PlayerInputActions not activating");
         }
+        else
+        {
+            Debug.Log("InputManager Initialized");
+            UIController.Instance.UpdateDebug("InputManager Initialized");
+        }
 
     }
 
