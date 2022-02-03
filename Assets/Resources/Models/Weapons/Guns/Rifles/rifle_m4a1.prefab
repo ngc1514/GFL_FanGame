@@ -190,7 +190,7 @@ GameObject:
   m_Component:
   - component: {fileID: 363634083595798781}
   m_Layer: 0
-  m_Name: m4a1
+  m_Name: rifle_m4a1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -204,7 +204,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1026877791502832199}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.269, y: 1.407, z: 0.497}
+  m_LocalPosition: {x: 0.089, y: 1.371, z: 0.337}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3182159621981735465}
@@ -380,7 +380,7 @@ GameObject:
   - component: {fileID: 9034588555150125116}
   m_Layer: 0
   m_Name: muzzle
-  m_TagString: Untagged
+  m_TagString: barrel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

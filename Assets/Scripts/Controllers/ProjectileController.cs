@@ -37,9 +37,15 @@ public class ProjectileController : MonoBehaviour
     // when collision, spawn bullet hole
     private void OnCollisionEnter(Collision collision)
     {
+        // Can also compare tag
+        //if (collision.gameObject.CompareTag("Enemy"))
+        //{
+        //    //ignore? show blood?
+        //}
+
         //Debug.Log("collision enter");
         ContactPoint contact = collision.GetContact(0);
-        // + contact.normal * 0.0001 so that we spawn the bulletHole decal a bit forward
+        // + contact.normal * 0.01f so that we spawn the bulletHole decal a bit forward
         GameObject.Instantiate(projectilDecal, contact.point + contact.normal * 0.01f, Quaternion.LookRotation(contact.normal)); // quaternion: spawn decal facing out the wall when hit, normal - perpendicular
         Destroy(gameObject);
     }

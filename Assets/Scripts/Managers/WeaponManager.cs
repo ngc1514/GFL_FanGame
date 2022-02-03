@@ -12,19 +12,6 @@ public class WeaponManager : MonoBehaviour
     public static WeaponManager Instance { get { return _instance; } }
     #endregion
 
-    //protected Dictionary<string, GameObject> gunPrefabDict = new Dictionary<string, GameObject>();
-    //public GameObject m4A1Prefab;
-    //public GameObject rifleBulletPrefab;
-
-
-    // FIXME: FOR TESTING ONLY for now. get weapon and projectile prefab from ResourceManager
-    [SerializeField] public GameObject weaponPrefab;
-    [SerializeField] public GameObject projectilePrefab;
-    [SerializeField] public Transform barrelTransform; // FIXME: get barrel from the spawned rifle
-    [SerializeField] public Transform projectileParent; 
-
-    [SerializeField] public AudioSource RifleAudioSource;
-
 
     private void Awake()
     {
@@ -43,18 +30,18 @@ public class WeaponManager : MonoBehaviour
     }
 
     // FIXME: convert rpm int (789) to float (0.076f)
-    public Weapon CreateWeapon(Type weaponType, GameObject playerObject, string name, float rpm, int currentAmmo, int mag, int total)
+    public void CreateWeapon(Type weaponType, GameObject playerObject, List<Weapon> weaponSlot, string name, float rpm, int currentAmmo, int mag, int total)
     {
         Weapon thisWeapon = (Weapon)playerObject.AddComponent(weaponType);
+        string weaponTypeLower = weaponType.Name.ToLower();
 
-        Debug.Log($"Creating weapon {name}. Type: {weaponType}");
+        //Debug.LogWarning($"Creating thisWeapon {name}. Type: {weaponType}");
+        //Debug.LogWarning($"This weapon: {thisWeapon}");
+        //Debug.LogWarning($"audio_{name}");
 
-        Debug.LogWarning($"This weapon: {thisWeapon}");
-
-        // DOING: get prefab from ResourceManager 
-        thisWeapon.weaponPrefab = ResourceManager.Instance.GetWeaponAndProjectile(weaponType, ($"{weaponType.Name.ToLower()}_{name}")).WeaponName;  //(GameObject)PrefabManager.Instance.GetType().GetProperty(weaponType.Name + "_" + name).GetValue(PrefabManager.Instance.GetType(), null);
-        thisWeapon.projectilePrefab = ResourceManager.Instance.GetWeaponAndProjectile(weaponType, ($"{weaponType.Name.ToLower()}_{name}")).ProjectileName; //(GameObject)PrefabManager.Instance.GetType().GetProperty("Projectile_" + baseTypeLower).GetValue(PrefabManager.Instance.GetType(), null);
-        thisWeapon.weaponAudio = ResourceManager.Instance.GetWeaponAudio("audio_rifle"); //RifleAudioSource; //(AudioSource)PrefabManager.Instance.GetType().GetProperty("Audio_" + baseTypeLower).GetValue(PrefabManager.Instance.GetType(), null);
+        thisWeapon.weaponPrefab = ResourceManager.Instance.GetWeaponAndProjectile(weaponType, ($"{weaponTypeLower}_{name}")).WeaponName;
+        thisWeapon.projectilePrefab = ResourceManager.Instance.GetWeaponAndProjectile(weaponType, ($"{weaponTypeLower}_{name}")).ProjectileName;
+        thisWeapon.weaponAudio = ResourceManager.Instance.GetWeaponAudio($"audio_{name}");
 
         thisWeapon.Name = name;
         thisWeapon.MagSize = mag;
@@ -70,7 +57,10 @@ public class WeaponManager : MonoBehaviour
             thisWeapon.CurrentAmmo = currentAmmo;
         }
         thisWeapon.TotalAmmoRemain = total;
-        return thisWeapon;
+
+        weaponSlot.Add(thisWeapon);
+
+        //return thisWeapon;
     }
 
 

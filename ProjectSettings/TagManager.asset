@@ -11,6 +11,8 @@ TagManager:
   - Env
   - Ground
   - Physical
+  - Environment
+  - muzzel
   layers:
   - Default
   - TransparentFX

@@ -33,6 +33,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform playerModelObj;
 
 
+    // FIXME: FOR TESTING ONLY for now. get weapon and projectile prefab from ResourceManager
+    [SerializeField] private Weapon currentWeapon;
+    [SerializeField] public GameObject projectilePrefab;
+    [SerializeField] public Transform muzzleTransform; // FIXME: get barrel from the spawned rifle
+    [SerializeField] public Transform projectileParent;
+
+
+
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
@@ -43,6 +51,11 @@ public class PlayerController : MonoBehaviour
             {
                 Debug.LogError("playerManager still null");
             }
+        }
+
+        if(projectileParent == null)
+        {
+            projectileParent = GameObject.Find("ProjectileParent").transform;
         }
     }
 
@@ -88,6 +101,14 @@ public class PlayerController : MonoBehaviour
         if (playerModelObj == null)
         {
             Debug.LogError("playerModelObj is null!");
+        }
+
+        // cache currentWeapon
+        currentWeapon = currentPlayer.GetCurrentWeapon();
+        if(currentWeapon != null && !currentWeapon.GetType().Equals(typeof(NullWeapon)))
+        {
+            muzzleTransform = currentWeapon.muzzleTransform;
+            projectilePrefab = currentWeapon.projectilePrefab;
         }
 
         // TODO: automatic assign follow/look object at for cinemachine when spawned player
@@ -154,15 +175,18 @@ public class PlayerController : MonoBehaviour
     #region Weapon control
     void SingleFireTrigger()// InputAction.CallbackContext context)
     {
-        Weapon curWeapon = currentPlayer.GetCurrentWeapon();
+        Weapon curWeapon = currentWeapon; //currentPlayer.GetCurrentWeapon();
         if (curWeapon.Attack())
         {
             AudioManager.Instance.PlayGunSound(curWeapon);
             // TODO: use object pool, organize code structure for GetPrefab() for GetCurrentWeapon()
             RaycastHit hit;
-            GameObject bullet = GameObject.Instantiate(WeaponManager.Instance.projectilePrefab,
-                                                        WeaponManager.Instance.barrelTransform.position,
-                                                        Quaternion.identity, WeaponManager.Instance.projectileParent); // FIXME: bullet facing side way
+
+            // FIXME: need to get barrel from weapon
+            GameObject bullet = Instantiate(projectilePrefab, 
+                                            muzzleTransform.position,
+                                            Quaternion.identity,  // FIXME: bullet facing side way
+                                            projectileParent);
             ProjectileController projectileController = bullet.GetComponent<ProjectileController>(); 
 
             // TODO: change infinity to a finite distance for bullet drop
@@ -205,9 +229,9 @@ public class PlayerController : MonoBehaviour
     // FIXLater: button hit same place wont fire again!
     void ReloadTrigger(InputAction.CallbackContext context)
     {
-        if (currentPlayer.GetCurrentWeapon().IsShootable)
+        if (currentWeapon.IsShootable) //currentPlayer.GetCurrentWeapon().IsShootable)
         {
-            currentPlayer.GetCurrentWeapon().Reload();
+            currentWeapon.Reload(); // currentPlayer.GetCurrentWeapon().Reload();
             UIController.Instance.UpdateAmmoText();
         }
     }
@@ -218,17 +242,18 @@ public class PlayerController : MonoBehaviour
         //Debug.Log("fire rate limit");
         SingleFireTrigger();
         currentPlayer.CanShootNext = false;
-        yield return new WaitForSeconds(currentPlayer.GetCurrentWeapon().Rpm);
+        yield return new WaitForSeconds(currentWeapon.Rpm); //currentPlayer.GetCurrentWeapon().Rpm);
         currentPlayer.CanShootNext = true;
     }
     #endregion
 
 
+
     #region Weapon switch
-    // TODO: switch weapon feature
     void SwitchUpWeapon()
     {
-
+        // TODO: change currentWeapon variable!!!!!
+        // update UI and stuffs
     }
 
     void SwitchDownWeapon()
@@ -237,4 +262,14 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
+
+    void ThrowWeapon()
+    {
+
+    }
+
+    void PickUpWeapon()
+    {
+
+    }
 }

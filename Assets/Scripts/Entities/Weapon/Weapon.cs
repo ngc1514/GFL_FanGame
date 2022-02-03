@@ -15,6 +15,7 @@ public abstract class Weapon : MonoBehaviour, IWeapon
     public AudioClip weaponAudio;
     public GameObject weaponPrefab;
     public GameObject projectilePrefab;
+    public Transform muzzleTransform;
     #endregion
 
 

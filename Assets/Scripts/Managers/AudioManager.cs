@@ -9,7 +9,6 @@ public class AudioManager : MonoBehaviour
     public static AudioManager Instance { get { return _instance; } }
     #endregion
 
-
     [SerializeField] private AudioSource Source;
 
     private AudioClip cachedAudio;
@@ -27,9 +26,7 @@ public class AudioManager : MonoBehaviour
             _instance = this;
         }
         #endregion
-        Debug.Log("Initializing AudioManager");
-
-
+        Debug.Log("AudioManager Initialized");
     }
 
     // TODO: need more validation code

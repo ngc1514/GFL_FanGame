@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,24 +11,28 @@ public class ResourceManager : MonoBehaviour
     public static ResourceManager Instance { get { return _instance; } }
     #endregion
 
-    #region weapon path
+    [SerializeField] private List<GameObject> pooledObjects;
+    [SerializeField] private GameObject thePool;
+
+
+    #region paths
+    // weapon 
     private readonly string rifleResourcePath = "Models/Weapons/Guns/Rifles/";
     private readonly string pistolResourcePath = "Models/Weapons/Guns/Pistols/";
 
+    // projectile 
     private readonly string projectileResourcePath = "Models/Weapons/Projectiles/";
-    #endregion
 
-    #region character path
+    // character 
     private readonly string charResourcePath = "Models/Characters/";
-    #endregion
 
-    #region audio path
-    private readonly string audioPath = "Audio/Weapon/";
-    #endregion
+    // audio 
+    private readonly string audioPath = "Audios/Weapons/";
 
-    #region sprites path
+    //sprites 
     private readonly string spritesPath = "Sprites/";
     #endregion
+
 
     // TODO: automatically load all resources under Resources/ and auto generate Properties name code
     #region objects dictionary
@@ -39,12 +42,6 @@ public class ResourceManager : MonoBehaviour
     public Dictionary<string, Sprite> SpriteDict { get; set; } = new Dictionary<string, Sprite>();
     #endregion
 
-
-    // TODO: object pools, read docs: https://learn.unity.com/tutorial/introduction-to-object-pooling#5ff8d015edbc2a002063971d
-    public List<GameObject> pooledObjects;
-    public GameObject objectToPool;
-    public int amountToPool;
-    
 
     private void Awake()
     {
@@ -59,9 +56,8 @@ public class ResourceManager : MonoBehaviour
         }
         #endregion
 
+        FillObjectPool();
 
-
-        //InitBattleResource();
         LoadBattleResource();
     }
 
@@ -77,47 +73,68 @@ public class ResourceManager : MonoBehaviour
     // TODO: check for null?
     void LoadBattleResource()
     {
-        Debug.Log("Loading basic resources");
+        Debug.Log("Loading battle resources");
         UIController.Instance.UpdateDebug("Loading basic resources");
 
         #region weapons models
         // rifle
         GameObject rifle_m4a1 = Resources.Load<GameObject>(rifleResourcePath + "rifle_m4a1");
         GameObject projectile_m4a1 = Resources.Load<GameObject>(projectileResourcePath + "projectile_m4a1");
-        WeaponAndProjectileDict.Add(rifle_m4a1.name, (rifle_m4a1, projectile_m4a1));
-
+        WeaponAndProjectileDict.Add(nameof(rifle_m4a1), (rifle_m4a1, projectile_m4a1));
 
         // pistol
         GameObject pistol_m1911 = Resources.Load<GameObject>(pistolResourcePath + "pistol_m1911");
         GameObject projectile_m1911 = Resources.Load<GameObject>(projectileResourcePath + "projectile_m1911");
-        WeaponAndProjectileDict.Add(pistol_m1911.name, (pistol_m1911, projectile_m1911));
+        WeaponAndProjectileDict.Add(nameof(pistol_m1911), (pistol_m1911, projectile_m1911));
         #endregion
 
 
         #region characters models
         GameObject ump9 = Resources.Load<GameObject>(charResourcePath + "ump9");
-        CharDict.Add(ump9.name, ump9);
+        CharDict.Add(nameof(ump9), ump9);
         #endregion
 
 
         #region sprites needed
         Sprite sprite_rifle_bullet_hole = Resources.Load<Sprite>(spritesPath + "rifle_bullet_hole");
-        SpriteDict.Add(sprite_rifle_bullet_hole.name, sprite_rifle_bullet_hole);
+        SpriteDict.Add(nameof(sprite_rifle_bullet_hole), sprite_rifle_bullet_hole);
         #endregion
 
 
         #region audio object
-        AudioClip audio_rifle = Resources.Load<AudioClip>(audioPath + "ar_1p_01");
-        AudioDict.Add("audio_rifle", audio_rifle);
+        AudioClip audio_m4a1 = Resources.Load<AudioClip>(audioPath + "m4a1");
+        AudioDict.Add(nameof(audio_m4a1), audio_m4a1);
+
+        AudioClip audio_m1911 = Resources.Load<AudioClip>(audioPath + "m1911");
+        AudioDict.Add(nameof(audio_m1911), audio_m1911);
         #endregion
     }
+
+
+
+    public void FillObjectPool()
+    {
+        UnityEngine.Object[] allModels;
+
+        allModels = Resources.LoadAll("Models", typeof(GameObject));
+
+        GameObject tmp;
+        foreach(var mod in allModels)
+        {
+            tmp = Instantiate((GameObject)mod);
+            tmp.transform.parent = thePool.transform;
+            tmp.SetActive(false);
+            pooledObjects.Add(tmp);
+        }
+    }
+
+
 
 
     // TODO: return resource gameobject from the dictionary 
     // FIXME: validation? check "rifle_" or "pistol_"?
     public (GameObject WeaponName, GameObject ProjectileName) GetWeaponAndProjectile(Type objType, string objName)
     {
-
         if (objType.IsSubclassOf(typeof(Weapon)))
         {
             return WeaponAndProjectileDict[objName];
@@ -137,7 +154,9 @@ public class ResourceManager : MonoBehaviour
 
     public AudioClip GetWeaponAudio(string gunAudioName)
     {
+        //Debug.LogWarning($"Fetching audio: {gunAudioName}");
         return AudioDict[gunAudioName];
     }
+
 
 }
